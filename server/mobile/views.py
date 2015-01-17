@@ -18,6 +18,7 @@ STATUSCODE = {
     "VOTESUCCESS":"202",
     "ADDGROUPSUCCESS":"203",
     "JOINSUCCESS":"204",
+    "UPDATEUSERNAMESUCCESS":"205",
     "PARAMETERMISS":"301",
     "TOOLONGPARAMETER":"302",
     "SQLERROR":"303",
@@ -169,7 +170,18 @@ def updateUserName(request):
     response = {}
     callback = "create_update_callback"
     if not("userID" in request.GET and "userName" in request.GET):
-        pass
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        userID = request.GET["userID"]
+        userName = request.GET["userName"]
+        user = User.objects.get(userID=userID)
+        user.userName = userName
+        user.save()
+        response["status"] = STATUSCODE["UPDATEUSERNAMESUCCESS"]
+        response["userName"] = userName
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+
 
 
 
