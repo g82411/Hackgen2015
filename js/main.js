@@ -1,10 +1,37 @@
+var person_id = "";
+
 function create_group_callback( json ) {
-  console.log(json)
+  group_arr = json["groupList"];
+  for(var i in group_arr) {
+    groupname = group_arr[i]["groupName"];
+    groupid = group_arr[i]["groupID"];
+    $("#group-field").append("<a href=\"#group-index\" id=\"group_"+groupid+"\" class=\"ui-link ui-btn ui-shadow ui-corner-all\" data-role=\"button\" role=\"button\">"+groupname+"</a>")
+  }
 }
 function add_user_callback( json ) {
   $("#user-name").html(json["userName"]);
   var storage = window.localStorage;
   window.localStorage.setItem("person_id", json["userID"]);
+  person_id = json["userID"];
+}
+
+function view_group_callback( json ) {
+  create_group_callback( json );
+}
+
+function update_userName_callback( json ) {
+  $("#user-name").html(json["userName"]);
+}
+
+function getGroup() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/viewGroup?callback=?",
+    dataType:"jsonp",
+    data: {userID: person_id}
+  }).done({
+
+  })
 }
 
 $(function() {
@@ -15,6 +42,9 @@ $(function() {
       $( "#add-user" ).popup();
       $( "#add-user" ).popup("open");
     }
+    else {
+      getGroup();
+    }
   }, 100);
 })
 
@@ -24,6 +54,17 @@ $("#add-user-submit").click(function() {
     url: "http://128.199.152.153:8000/addUser?callback=?",
     dataType:"jsonp",
     data: {username: $("#add-user-value").val()}
+  }).done({
+
+  })
+})
+
+$("#change-username-submit").click(function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/updateUserName?callback=?",
+    dataType:"jsonp",
+    data: {userID: person_id, userName: $("#change-username-value").val()}
   }).done({
 
   })
@@ -80,7 +121,7 @@ $("#create-group-submit").click(function() {
     type: "GET",
     url: "http://128.199.152.153:8000/addGroup?callback=?",
     dataType:"jsonp",
-    data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat }
+    data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat, userID: person_id }
   }).done(function( msg ) {
   });
 })
