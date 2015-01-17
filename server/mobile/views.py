@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
@@ -6,15 +7,20 @@ from django.db import connection
 from django.utils.html import escape, strip_tags, remove_tags
 from mobile.models import User
 from mobile.models import Group
+from mobile.models import Choose
+from mobile.models import Vote
+from mobile.models import Join
 import json
 import random
 STATUSCODE = {
     "ADDUSERSUCCESS":"201",
+    "VOTESUCCESS":"202",
     "PARAMETERMISS":"301",
     "TOOLONGPARAMETER":"302",
     "SQLERROR":"303",
     "NOGROUPNAME":"304",
-    "UNDEFINEUSERID":"305"
+    "UNDEFINEUSERID":"305",
+    "UNDEFINECHOOSE":"306"
 }
 def getRandomString(length):
     result = ''
@@ -54,10 +60,45 @@ def viewUserName(request):
         userName = User.objects.get(userID=userID).userName
         response["username"] = userName
     return HttpResponse(json.dumps(response),content_type="application/json")
-@csrf_exempt
-def testFrom(request):
-    print request
-    return HttpResponse(request)
+def vote(request):
+    response = {}
+    if not ("userID" in request.POST and "chooseID" in request.POST):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        userID = request.POST["userID"]
+        chooseID = request.POST["chooseID"]
+        if User.objects.filter(userID=userID).count() == 0:
+            response["status"] = (STATUSCODE["UNDEFINEUSERID"])
+        elif Choose.objects.filter(userID=userID).count() == 0:
+            response["status"] = (STATUSCODE["UNDEFINECHOOSE"])
+        else:
+            chooseID = Choose.objects.get(chooseID=chooseID)
+            userID = User.objects.get(userID=userID)
+            newVote = vote(chooseID=chooseID,userID=userID)
+            newVote.save()
+            response["status"] = (STATUSCODE["VOTESUCCESS"])
+    return HttpResponse(json.dumps(response),content_type="application/json")
+
+def viewGroup(request):
+    response = {}
+    if not "userID" in request.GET:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        userID = request.GET["userID"]
+        for groupid in Join.objects.filter(userID=userID).values_list('groupID'):
+            pass
+def addGroup(request):
+    for key in request.POST:
+        print request.POST[key]
+
+
+
+
+
+
+
+
+
 
 
 
