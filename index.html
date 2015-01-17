@@ -127,7 +127,7 @@
               <label for="choice-id">冰糖</label>
             </div>
             <div class="ui-block-b">
-              <a href="#" class="ui-btn ui-icon-user ui-btn-icon-left">5</a>
+              <a href="#group-member" class="ui-btn ui-icon-user ui-btn-icon-left">5</a>
             </div>
           </fieldset>
           <fieldset class="ui-grid-a">
@@ -136,19 +136,22 @@
               <label for="choice-id2">秋葉原</label>
             </div>
             <div class="ui-block-b">
-              <a href="#" class="ui-btn ui-icon-user ui-btn-icon-left">9</a>
+              <a href="#group-member" class="ui-btn ui-icon-user ui-btn-icon-left">9</a>
             </div>
           </fieldset>
         </div>
       </fieldset>
-      <a href="#add-choice" data-role="button">新增提案</a>
+      <a href="#add-choice" data-role="button" data-rel="popup">新增提案</a>
+      <div data-role="popup" id="add-choice">
+        <input type="text" maxlength="8" name="name" id="change-username-value" value="">
+        <a href="#" data-role="button" data-rel="back" data-theme="b" id="add-choice-submit">送出</a>
+      </div>
       <a href="#group-member" data-role="button">查看成員</a>
     </div>
     <div data-role="panel" id="group-member" data-theme="b" data-position="right" data-display="overlay">
 
     </div>
   </div>
-
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>

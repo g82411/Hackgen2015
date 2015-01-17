@@ -59,4 +59,4 @@ $("#create-group-submit").click(function() {
   }).done(function( msg ) {
     console.log(json.parse(msg));
   });
-})
+});
