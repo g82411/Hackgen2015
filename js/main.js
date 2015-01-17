@@ -1,16 +1,30 @@
 function create_group_callback( json ) {
   console.log(json)
 }
+function add_user_callback( json ) {
+  $("#user-name").html(json["userName"]);
+  var storage = window.localStorage;
+  window.localStorage.setItem("person_id", json["userID"]);
+}
 $(function() {
   var storage = window.localStorage;
   person_id = window.localStorage.getItem("person_id");
   if(!person_id) {
-    console.log('in');
+    $( "#add-user" ).popup();
     $( "#add-user" ).popup("open");
   }
 })
 
+$("#add-user-submit").click(function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/addUser?callback=?",
+    dataType:"jsonp",
+    data: {username: $("#add-user-value").val()}
+  }).done({
 
+  })
+})
 
 $("#create-group-submit").click(function() {
   var groupname = $("#group-name").val();
