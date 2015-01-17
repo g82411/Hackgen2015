@@ -1,8 +1,15 @@
-function jsonCallback( json ) {
-  $.each(json, function(index, value){
-    alert(index + " " + value );
-  });
+function create_group_callback( json ) {
+  console.log(json)
 }
+$(function() {
+  var storage = window.localStorage;
+  person_id = window.localStorage.getItem("person_id");
+  if(!person_id) {
+    console.log('in');
+    $( "#add-user" ).popup("open");
+  }
+})
+
 
 
 $("#create-group-submit").click(function() {
@@ -51,12 +58,12 @@ $("#create-group-submit").click(function() {
     var daysetsat = false;
   }
   var defaulttoeat = $("#default-to-eat").val();
+
   $.ajax({
     type: "GET",
-    url: "http://128.199.152.153:80/testpost?callback=?",
-    dataType:"json",
+    url: "http://128.199.152.153:8000/addGroup?callback=?",
+    dataType:"jsonp",
     data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat }
   }).done(function( msg ) {
-    console.log(json.parse(msg));
   });
 });
