@@ -182,7 +182,7 @@ def join(request):
     return HttpResponse(data,content_type="application/javascript")
 def updateUserName(request):
     response = {}
-    callback = "create_update_callback"
+    callback = "create_updateUserName_callback"
     if not("userID" in request.GET and "userName" in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
