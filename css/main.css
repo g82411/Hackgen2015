@@ -10,6 +10,11 @@ b {
   padding: 10px;
 }
 
+
+#add-choice {
+  padding: 10px;
+}
+
 .ui-flipswitch {
   margin: 15px;
 }

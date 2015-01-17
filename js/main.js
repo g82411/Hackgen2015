@@ -66,4 +66,4 @@ $("#create-group-submit").click(function() {
     data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat }
   }).done(function( msg ) {
   });
-})
+});
