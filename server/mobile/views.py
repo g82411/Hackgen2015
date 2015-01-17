@@ -243,8 +243,13 @@ def searchGroup(request):
                     searchResult["isJoin"] = False
                 else:
                     searchResult["isJoin"] = True
+                response.update(searchResult)
+                response["status"] = STATUSCODE["SEARCHSUCCESS"]
         except:
             response["status"] = STATUSCODE["FACKUERROR"]
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+
 
 
 
