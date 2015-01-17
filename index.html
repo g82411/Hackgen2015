@@ -2,20 +2,51 @@
   <head>
     <title>hackgen2015</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href=".\font-awesome-4.2.0\css\font-awesome.css" />
+    <link rel="stylesheet" href=".\css\main.css" />
   </head>
   <body>
-    <!-- navbar -->
-    <div data-role="navbar" data-iconpos="top">
-      <ul>
-        <li><a href="#.html" class="ui-btn ui-icon-home ui-btn-icon-top ui-btn-active ui-state-persist">首頁</a></li>
-        <li><a href="#.html" class="ui-btn ui-icon-search ui-btn-icon-top">尋找ID</a></li>
-        <li><a href="#.html" class="ui-btn ui-icon-gear ui-btn-icon-top">設定</a></li>
-      </ul>
+
+    <div data-role="page" id="index">
+    <div data-role="header">
+
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#.html" class="ui-btn ui-icon-home ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+          <li><a href="#search-index" data-transition="slide" class="ui-btn ui-icon-search ui-btn-icon-top"></a></li>
+          <li><a href="#.html" class="ui-btn ui-icon-gear ui-btn-icon-top"></a></li>
+        </ul>
+      </div>
     </div>
+    <div role="main" class="ui-content">
+      <div id="group-field">
+        <input type="button" value="午餐吃吃團">
+      </div>
+      <input type="button" value="+">
+    </div>
+  </div>
+  <div data-role="page" id="search-index">
+    <div data-role="header">
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#.html" class="ui-btn ui-icon-back ui-btn-icon-top"></a></li>
+          <li><a href="#.html" class="ui-btn ui-icon-search ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+          <li><a href="#.html" class="ui-btn ui-icon-gear ui-btn-icon-top"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div role="main" class="ui-content">
+      <a href="#index" data-rel="back" data-transition="slide" class="ui-btn ui-corner-all ui-btn-inline">Go Back To Page 1</a>
+    </div>
+  </div>
+
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="./js/main.js"></script>
   </body>
 </html>
