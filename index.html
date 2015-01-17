@@ -22,9 +22,9 @@
     </div>
     <div role="main" class="ui-content">
       <div id="group-field">
-        <input type="button" value="午餐吃吃團">
+        <a href="#group-index" data-role="button">午餐吃吃團</a>
       </div>
-      <a href="#add-group" data-role="button">+</a>
+      <a href="#add-group" data-role="button">新增群組</a>
     </div>
   </div>
   <div data-role="page" id="search-index">
@@ -68,7 +68,7 @@
       <h1>新增群組</h1>
     </div>
     <div role="main" class="ui-content">
-      <form id="create-group" action="" method="post">
+      <div id="create-group">
         <label for="group-name">群組名稱：</label>
         <input type="text" maxlength="10" name="group-name" id="group-name" value="">
         <label for="time-set">時間：</label>
@@ -76,7 +76,7 @@
         <label for="day-set">星期：</label>
         <div id="day-set" class="ui-field-contain">
           <fieldset data-role="controlgroup" data-type="horizontal">
-            <input type="checkbox" name="day-set-sun" id="day-set-sun" class="custom">
+            <input type="checkbox" name="day-set-sun" id="day-set-sun" class="custom" data-cacheval="true">
             <label for="day-set-sun">Sun</label>
 
             <input type="checkbox" name="day-set-mon" id="day-set-mon" class="custom">
@@ -101,10 +101,51 @@
         <label for="default-to-eat">預設吃吃：</label>
         <input type="text" name="default-to-eat" id="default-to-eat" value="">
         <fieldset class="ui-grid-a">
-          <div class="ui-block-a"><input type="submit" value="確定"></div>
+          <div class="ui-block-a"><input id="create-group-submit" type="button" value="確定"></div>
           <div class="ui-block-b"><a href="#index" data-role="button" id="add-group-cancel">取消</a></div>
         </fieldset>
-      </form>
+      </div>
+    </div>
+  </div>
+  <div data-role="page" id="group-index">
+    <div data-role="header">
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#index" class="ui-btn ui-icon-back ui-btn-icon-top"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-bullets ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-gear ui-btn-icon-top"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div role="main" class="ui-content">
+      <fieldset data-role="controlgroup">
+        <div id="group-choice">
+          <fieldset class="ui-grid-a">
+            <div class="ui-block-a">
+              <input type="radio" name="group-choice" id="choice-id" value="choice-id" checked="checked">
+              <label for="choice-id">冰糖</label>
+            </div>
+            <div class="ui-block-b">
+              <a href="#" class="ui-btn ui-icon-user ui-btn-icon-left">5</a>
+            </div>
+          </fieldset>
+          <fieldset class="ui-grid-a">
+            <div class="ui-block-a">
+              <input type="radio" name="group-choice" id="choice-id2" value="choice-id2">
+              <label for="choice-id2">秋葉原</label>
+            </div>
+            <div class="ui-block-b">
+              <a href="#" class="ui-btn ui-icon-user ui-btn-icon-left">9</a>
+            </div>
+          </fieldset>
+        </div>
+      </fieldset>
+      <a href="#add-choice" data-role="button">新增提案</a>
+      <a href="#group-member" data-role="button">查看成員</a>
+    </div>
+    <div data-role="panel" id="group-member" data-theme="b" data-position="right" data-display="overlay">
+
     </div>
   </div>
 
