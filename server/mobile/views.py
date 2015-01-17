@@ -48,7 +48,7 @@ def viewUserName(request):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     userID = request.GET["userID"]
     # check if userid is not in db
-    if User.objects.filer(userID=userID).count() == 0:
+    if User.objects.filter(userID=userID).count() == 0:
         response["status"] = (STATUSCODE["UNDEFINEUSERID"])
     else:
         userName = User.objects.get(userID=userID)
