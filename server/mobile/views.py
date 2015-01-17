@@ -25,7 +25,8 @@ STATUSCODE = {
     "SQLERROR":"303",
     "NOGROUPNAME":"304",
     "UNDEFINEUSERID":"305",
-    "UNDEFINECHOOSE":"306"
+    "UNDEFINECHOOSE":"306",
+    "FACKUERROR":"307"
 }
 def getRandomString(length):
     result = ''
@@ -180,10 +181,24 @@ def join(request):
         response["status"] = STATUSCODE["JOINSUCCESS"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
+def parseUserID(request):
+    callback = "parseUserID_callback"
+    response = {}
+    if not("userID" in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    try:
+        userID = request.GET["userID"]
+        user = User.objects.get(userID=userID).userName
+        response["userName"] = user
+        response["status"] = STATUSCODE["SEARCHSUCCESS"]
+    except:
+        response["status"] = STATUSCODE["FACKUERROR"]
 
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
 def updateUserName(request):
     response = {}
-    callback = "create_updateUserName_callback"
+    callback = "update_userName_callback"
     if not("userID" in request.GET and "userName" in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
