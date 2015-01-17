@@ -97,7 +97,7 @@ def viewGroup(request):
     else:
         userID = request.GET["userID"]
         groupList = []
-        for ids in Join.objects.filter(userID=owner_id).values_list('groupID','isJoin'):
+        for ids in Join.objects.filter(userID=userIDsa).values_list('groupID','isJoin'):
             groupID = ids[0]
             isJoin = ids[1]
             groupName = Group.objects.get(groupID=groupID).groupName
@@ -180,6 +180,7 @@ def join(request):
         response["status"] = STATUSCODE["JOINSUCCESS"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
+
 def updateUserName(request):
     response = {}
     callback = "create_updateUserName_callback"
