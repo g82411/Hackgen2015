@@ -1,3 +1,10 @@
+function jsonCallback( json ) {
+  $.each(json, function(index, value){
+    alert(index + " " + value );
+  });
+}
+
+
 $("#create-group-submit").click(function() {
   var groupname = $("#group-name").val();
   var timeset = $("#time-set").val();
@@ -45,10 +52,11 @@ $("#create-group-submit").click(function() {
   }
   var defaulttoeat = $("#default-to-eat").val();
   $.ajax({
-    type: "POST",
-    url: "http://128.199.152.153:80/testpost",
+    type: "GET",
+    url: "http://128.199.152.153:80/testpost?callback=?",
+    dataType:"json",
     data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat }
   }).done(function( msg ) {
-    console.log(msg);
+    console.log(json.parse(msg));
   });
 })
