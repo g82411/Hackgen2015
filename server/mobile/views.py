@@ -17,6 +17,7 @@ STATUSCODE = {
     "ADDUSERSUCCESS":"201",
     "VOTESUCCESS":"202",
     "ADDGROUPSUCCESS":"203",
+    "JOINSUCCESS":"204",
     "PARAMETERMISS":"301",
     "TOOLONGPARAMETER":"302",
     "SQLERROR":"303",
@@ -86,7 +87,6 @@ def vote(request):
             newVote.save()
             response["status"] = (STATUSCODE["VOTESUCCESS"])
     return HttpResponse(json.dumps(response),content_type="application/json")
-
 def viewGroup(request):
     response = {}
     if not "userID" in request.GET:
@@ -104,12 +104,12 @@ def testFrom(request):
 def addGroup(request):
     response = {}
     callback = "create_group_callback"
-    if not("groupname" in request.GET and "timeset" in request.GET and "defaulttoeat"):
+    if not("groupname" in request.GET and "timeset" in request.GET and "defaulttoeat" in request.GET and "userID" in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
         groupName = request.GET["groupname"]
         groupPushTime = request.GET["timeset"]
-        owner_id = User.objects.get(userID="PGXKalTmHa")
+        owner_id = User.objects.get(userID=request.GET["userID"])
         defaultValue = request.GET["defaulttoeat"]
         newGroup = Group(groupName=groupName,
                          groupPushTime=groupPushTime,
@@ -141,4 +141,37 @@ def addGroup(request):
         response["status"] = STATUSCODE["ADDGROUPSUCCESS"]
         data = '%s(%s);' % (callback,json.dumps(response))
         return HttpResponse(data,content_type="application/javascript")
+def join(request):
+    callback = "join_callback"
+    response = {}
+    if not ("userID" in request.GET and "groupID" in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        userID = request.GET["userID"]
+        groupID = request.GET["groupID"]
+        userID = User.objects.get(userID=userID)
+        groupID = Group.objects.get(groupID=groupID)
+        newJoin = Join(groupID=groupID,userID=userID)
+        newJoin.save()
+        groupList = []
+        for ids in Join.objects.filter(userID=userID).values_list('groupID','isJoin'):
+            groupID = ids[0]
+            isJoin = ids[1]
+            groupName = Group.objects.get(groupID=groupID).groupName
+            result = {"groupID":groupID,
+                      "groupName":groupName,
+                      "isJoin":isJoin}
+            groupList.append(result)
+        response["status"] = STATUSCODE["JOINSUCCESS"]
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+def updateUserName(request):
+    response = {}
+    callback = "create_update_callback"
+    if not("userID" in request.GET and "userName" in request.GET):
+        pass
+
+
+
+
 
