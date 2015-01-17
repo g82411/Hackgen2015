@@ -170,12 +170,17 @@
       <input type="search" name="search" id="search-basic" value="">
     </div> -->
     <div role="main" class="ui-content">
-      <p>使用者名稱：</p>
-      <b id="user-name">Gary</b>
+      <p>群組名稱：</p>
+      <b id="group-name">午餐吃吃團</b>
       <a href="#change-groupname" data-role="button" data-rel="popup">更改名稱</a>
       <div data-role="popup" id="change-groupname">
         <input type="text" maxlength="8" name="name" id="change-username-value" value="">
         <a href="#" data-role="button" data-rel="back" data-theme="b" id="change-groupname-submit">送出</a>
+      </div>
+      <a href="#exit-group" data-role="button" data-rel="popup">退出群組/刪除群組</a>
+      <div data-role="popup" id="exit-group">
+        <a href="#index" data-role="button" id="exit-group-cancel">退出群組</a>
+        <a href="#" data-role="button" data-rel="back" data-theme="b">取消</a>
       </div>
     </div>
   </div>
