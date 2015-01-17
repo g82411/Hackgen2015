@@ -51,7 +51,7 @@ def viewUserName(request):
     if User.objects.filter(userID=userID).count() == 0:
         response["status"] = (STATUSCODE["UNDEFINEUSERID"])
     else:
-        userName = User.objects.get(userID=userID)
+        userName = User.objects.get(userID=userID).userName
         response["username"] = userName
     return HttpResponse(json.dumps(response),content_type="application/json")
 @csrf_exempt
