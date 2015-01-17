@@ -46,6 +46,7 @@ def addUser(request):
             newUser = User(userID=userID,userName=username)
             newUser.save()
             response["userID"] = userID
+            response["userName"] = username
             response["status"] = STATUSCODE["ADDUSERSUCCESS"]
         except Exception as e:
             response["status"] = STATUSCODE["SQLERROR"]
