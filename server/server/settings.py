@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mobile',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -47,6 +48,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 )
 
 ROOT_URLCONF = 'server.urls'
@@ -62,14 +65,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'hackgen',
         'USER':'root',
-        'PASSWORD':'1234'
+        'PASSWORD':'whatisthepassword'
     }
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-tw'
 
 TIME_ZONE = 'UTC'
 
@@ -78,13 +81,24 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
+DEFAULT_CHARSET = 'UTF-8'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
+ORS_ORIGIN_WHITELIST = (
+        'google.com',
+        'hostname.example.com',
+	'localhost'
+    )
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
+    ''
 )
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    'mobile/static/',
+)
+TATIC_URL = '/static/'

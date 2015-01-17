@@ -1,0 +1,119 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8"/>
+    <title>hackgen2015</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href=".\font-awesome-4.2.0\css\font-awesome.css" />
+    <link rel="stylesheet" href="{% static '\css\main.css' %}" />
+  </head>
+  <body>
+
+    <div data-role="page" id="index">
+    <div data-role="header">
+
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#" class="ui-btn ui-icon-home ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+          <li><a href="#search-index" class="ui-btn ui-icon-search ui-btn-icon-top"></a></li>
+          <li><a href="#user-setting" class="ui-btn ui-icon-user ui-btn-icon-top"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div role="main" class="ui-content">
+      <div id="group-field">
+        <input type="button" value="午餐吃吃團">
+      </div>
+      <a href="#add-group" data-role="button">+</a>
+    </div>
+  </div>
+  <div data-role="page" id="search-index">
+    <div data-role="header">
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#index" class="ui-btn ui-icon-home ui-btn-icon-top"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-search ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+          <li><a href="#user-setting" class="ui-btn ui-icon-user ui-btn-icon-top"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div role="main" class="ui-content">
+      <input type="search" name="search" id="search-basic" value="">
+    </div>
+  </div>
+  <div data-role="page" id="user-setting">
+    <div data-role="header">
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#index" class="ui-btn ui-icon-home ui-btn-icon-top"></a></li>
+          <li><a href="#search-index" class="ui-btn ui-icon-search ui-btn-icon-top"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-user ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div role="main" class="ui-content">
+      <p>使用者名稱：</p>
+      <b id="user-name">Gary</b>
+      <a href="#change-username" data-role="button" data-rel="popup">更改名稱</a>
+      <div data-role="popup" id="change-username">
+        <input type="text" maxlength="8" name="name" id="change-username-value" value="">
+        <a href="#" data-role="button" data-rel="back" data-theme="b" id="change-username-submit">送出</a>
+      </div>
+    </div>
+  </div>
+  <div data-role="page" id="add-group">
+    <div data-role="header">
+      <h1>新增群組</h1>
+    </div>
+    <div role="main" class="ui-content">
+      <form id="create-group" action="" method="post">
+        <label for="group-name">群組名稱：</label>
+        <input type="text" maxlength="10" name="group-name" id="group-name" value="">
+        <label for="time-set">時間：</label>
+        <input type="time" name="time-set" id="time-set" value="">
+        <label for="day-set">星期：</label>
+        <div id="day-set" class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <input type="checkbox" name="day-set-sun" id="day-set-sun" class="custom">
+            <label for="day-set-sun">Sun</label>
+
+            <input type="checkbox" name="day-set-mon" id="day-set-mon" class="custom">
+            <label for="day-set-mon">Mon</label>
+
+            <input type="checkbox" name="day-set-tue" id="day-set-tue" class="custom">
+            <label for="day-set-tue">Tue</label>
+
+            <input type="checkbox" name="day-set-wed" id="day-set-wed" class="custom">
+            <label for="day-set-wed">Wed</label>
+
+            <input type="checkbox" name="day-set-thu" id="day-set-thu" class="custom">
+            <label for="day-set-thu">Thu</label>
+
+            <input type="checkbox" name="day-set-fri" id="day-set-fri" class="custom">
+            <label for="day-set-fri">Fri</label>
+
+            <input type="checkbox" name="day-set-sat" id="day-set-sat" class="custom">
+            <label for="day-set-sat">Sat</label>
+          </fieldset>
+        </div>
+        <label for="default-to-eat">預設吃吃：</label>
+        <input type="text" name="default-to-eat" id="default-to-eat" value="">
+        <fieldset class="ui-grid-a">
+          <div class="ui-block-a"><input type="submit" value="確定"></div>
+          <div class="ui-block-b"><a href="#index" data-role="button" id="add-group-cancel">取消</a></div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

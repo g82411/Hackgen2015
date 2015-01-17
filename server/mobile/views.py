@@ -33,7 +33,7 @@ def getRandomString(length):
 # Create your views here.
 def addUser(request):
     response = {}
-    callback = "add_user"
+    callback = "add_user_callback"
     if not "username" in request.GET:
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
@@ -45,14 +45,16 @@ def addUser(request):
         try:
             newUser = User(userID=userID,userName=username)
             newUser.save()
+            print userID
+            print username
             response["userID"] = userID
             response["userName"] = username
             response["status"] = STATUSCODE["ADDUSERSUCCESS"]
         except Exception as e:
             response["status"] = STATUSCODE["SQLERROR"]
             print e
-        data = '%s(%s);' % (callback,json.dumps(response))
-        return HttpResponse(response,content_type="application/javascript")
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
 def viewUserName(request):
     response = {}
     if not "userID" in request.GET:
@@ -95,10 +97,9 @@ def viewGroup(request):
             pass
 def testFrom(request):
     response = {}
-    userName = User.objects.get(userID="5wdmkf0xKM").userName
-    response['aa'] = userName
-    if 'callback' in request.REQUEST:
-        data = '%s(%s);' % ('jsonCallback',json.dumps(response))
+    name = request.GET["username"]
+    response['aa'] = name
+    data = '%s(%s);' % ('jsonCallback',json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
 def addGroup(request):
     response = {}
@@ -108,13 +109,12 @@ def addGroup(request):
     else:
         groupName = request.GET["groupname"]
         groupPushTime = request.GET["timeset"]
-        owner_id = User.objects.get(userID="5wdmkf0xKM")
+        owner_id = User.objects.get(userID="PGXKalTmHa")
         defaultValue = request.GET["defaulttoeat"]
         newGroup = Group(groupName=groupName,
                          groupPushTime=groupPushTime,
                          owner_id=owner_id,
                          defaultValue=defaultValue)
-        newGroup.groupID
         newGroup.save()
         newGroup = Group.objects.get(groupID=newGroup.groupID)
         Mon = request.GET["daysetmon"]
@@ -141,21 +141,4 @@ def addGroup(request):
         response["status"] = STATUSCODE["ADDGROUPSUCCESS"]
         data = '%s(%s);' % (callback,json.dumps(response))
         return HttpResponse(data,content_type="application/javascript")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
