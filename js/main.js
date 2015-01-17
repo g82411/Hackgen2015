@@ -6,7 +6,9 @@ function add_user_callback( json ) {
   var storage = window.localStorage;
   window.localStorage.setItem("person_id", json["userID"]);
 }
-$(function() {
+
+document.addEventListener("deviceready", check_id, false);
+function check_id() {
   var storage = window.localStorage;
   person_id = window.localStorage.getItem("person_id");
   if(!person_id) {
