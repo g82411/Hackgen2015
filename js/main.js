@@ -23,10 +23,25 @@ function update_userName_callback( json ) {
   $("#user-name").html(json["userName"]);
 }
 
+function parseUserID_callback( json ) {
+  update_userName_callback( json );
+}
+
 function getGroup() {
   $.ajax({
     type: "GET",
     url: "http://128.199.152.153:8000/viewGroup?callback=?",
+    dataType:"jsonp",
+    data: {userID: person_id}
+  }).done({
+
+  })
+}
+
+function getName() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/parseUserID?callback=?",
     dataType:"jsonp",
     data: {userID: person_id}
   }).done({
@@ -44,6 +59,7 @@ $(function() {
     }
     else {
       getGroup();
+      getName();
     }
   }, 100);
 })
