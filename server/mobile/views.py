@@ -5,13 +5,16 @@ from django.db.models import Q
 from django.db import connection
 from django.utils.html import escape, strip_tags, remove_tags
 from mobile.models import User
-
+from mobile.models import Group
+import json
 import random
 STATUSCODE = {
     "ADDUSERSUCCESS":"201",
     "PARAMETERMISS":"301",
     "TOOLONGPARAMETER":"302",
-    "SQLERROR":"303"
+    "SQLERROR":"303",
+    "NOGROUPNAME":"304",
+    "UNDEFINEUSERID":"305"
 }
 def getRandomString(length):
     result = ''
@@ -22,8 +25,9 @@ def getRandomString(length):
 # Create your views here.
 @csrf_exempt
 def addUser(request):
+    response = {}
     if not "username" in request.POST:
-        return HttpResponse(STATUSCODE["PARAMETERMISS"])
+        response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
         username = escape(request.POST["username"])
         userID = getRandomString(10)
@@ -33,9 +37,29 @@ def addUser(request):
         try:
             newUser = User(userID=userID,userName=username)
             newUser.save()
-            return HttpResponse(STATUSCODE["ADDUSERSUCCESS"])
+            response["status"] = STATUSCODE["ADDUSERSUCCESS"]
         except Exception as e:
-            return HttpResponse(STATUSCODE["SQLERROR"])
+            response["status"] = STATUSCODE["SQLERROR"]
             print e
+        return HttpResponse(json.dumps(response),content_type="application/json")
+def viewUserName(request):
+    response = {}
+    if not "userID" in request.GET:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    userID = request.GET["userID"]
+    # check if userid is not in db
+    if User.objects.filer(userID=userID).count() == 0:
+        response["status"] = (STATUSCODE["UNDEFINEUSERID"])
+    else:
+        userName = User.objects.get(userID=userID)
+        response["username"] = userName
+    return HttpResponse(json.dumps(response),content_type="application/json")
+
+
+
+
+
+
+
 
 
