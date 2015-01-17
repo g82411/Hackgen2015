@@ -1,6 +1,16 @@
 function create_group_callback( json ) {
-  alert(json["aa"]);
+  console.log(json)
 }
+$(function() {
+  var storage = window.localStorage;
+  person_id = window.localStorage.getItem("person_id");
+  if(!person_id) {
+    console.log('in');
+    $( "#add-user" ).popup("open");
+  }
+})
+
+
 
 $("#create-group-submit").click(function() {
   var groupname = $("#group-name").val();
@@ -51,7 +61,7 @@ $("#create-group-submit").click(function() {
 
   $.ajax({
     type: "GET",
-    url: "http://128.199.152.153:8000/testpost?callback=?",
+    url: "http://128.199.152.153:8000/addGroup?callback=?",
     dataType:"jsonp",
     data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat }
   }).done(function( msg ) {

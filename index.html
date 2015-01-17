@@ -25,6 +25,10 @@
       </div>
       <a href="#add-group" data-role="button">新增群組</a>
     </div>
+    <div data-role="popup" id="add-user">
+      <input type="text" maxlength="8" name="name" id="add-user-value" value="請輸入名稱">
+      <a href="#" data-role="button" data-rel="back" data-theme="b" id="add-user-submit">送出</a>
+    </div>
   </div>
   <div data-role="page" id="search-index">
     <div data-role="header">
@@ -163,10 +167,8 @@
     </div>
   </div>
 
-
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="./js/main.js"></script>
   </body>

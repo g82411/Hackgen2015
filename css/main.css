@@ -9,3 +9,7 @@ b {
 #change-username {
   padding: 10px;
 }
+
+.ui-flipswitch {
+  margin: 15px;
+}
