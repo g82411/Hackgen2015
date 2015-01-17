@@ -211,6 +211,43 @@ def updateUserName(request):
         response["userName"] = userName
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
+def searchGroup(request):
+    response = {}
+    callback = "search_group_callback"
+    if not("groupID" in request.GET and "userID" in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        try:
+            userID = request.GET["userID"]
+            groupID = request.GET["groupID"]
+            searchResult = {}
+            if Group.objects.filter(groupID=groupID).count() == 0:
+                pass
+            else:
+                user = User.objects.get(userID=userID)
+                group = Group.objects.get(groupID=groupID)
+                day = Day.objects.get(groupID=group)
+                owner = User.objects.get(userID=group.owner_id).userName
+                searchResult["mon"] = day.Mon
+                searchResult["tue"] = day.Tue
+                searchResult["wed"] = day.Wed
+                searchResult["thu"] = day.Thu
+                searchResult["fri"] = day.Fri
+                searchResult["sat"] = day.Sat
+                searchResult["sun"] = day.Sun
+                searchResult["groupName"] = group.groupName
+                searchResult["groupPushTime"] = group.groupPushTime
+                searchResult["defaultValue"] = group.defaultValue
+                searchResult["owner"] = owner
+                if Join.objects.filter(Q(userID=user) & Q(groupID=group)).count == 0:
+                    searchResult["isJoin"] = False
+                else:
+                    searchResult["isJoin"] = True
+        except:
+            response["status"] = STATUSCODE["FACKUERROR"]
+
+
+
 
 
 
