@@ -54,7 +54,10 @@ def viewUserName(request):
         userName = User.objects.get(userID=userID)
         response["username"] = userName
     return HttpResponse(json.dumps(response),content_type="application/json")
-
+@csrf_exempt
+def testFrom(request):
+    print request
+    return HttpResponse(request)
 
 
 
