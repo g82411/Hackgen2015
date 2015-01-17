@@ -1,5 +1,6 @@
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>hackgen2015</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href=".\font-awesome-4.2.0\css\font-awesome.css" />
@@ -13,9 +14,9 @@
       <!-- navbar -->
       <div data-role="navbar" data-iconpos="top">
         <ul>
-          <li><a href="#.html" class="ui-btn ui-icon-home ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
-          <li><a href="#search-index" data-transition="slide" class="ui-btn ui-icon-search ui-btn-icon-top"></a></li>
-          <li><a href="#.html" class="ui-btn ui-icon-gear ui-btn-icon-top"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-home ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+          <li><a href="#search-index" class="ui-btn ui-icon-search ui-btn-icon-top"></a></li>
+          <li><a href="#user-setting" class="ui-btn ui-icon-user ui-btn-icon-top"></a></li>
         </ul>
       </div>
     </div>
@@ -31,14 +32,29 @@
       <!-- navbar -->
       <div data-role="navbar" data-iconpos="top">
         <ul>
-          <li><a href="#.html" class="ui-btn ui-icon-back ui-btn-icon-top"></a></li>
-          <li><a href="#.html" class="ui-btn ui-icon-search ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
-          <li><a href="#.html" class="ui-btn ui-icon-gear ui-btn-icon-top"></a></li>
+          <li><a href="#index" class="ui-btn ui-icon-home ui-btn-icon-top"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-search ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+          <li><a href="#user-setting" class="ui-btn ui-icon-user ui-btn-icon-top"></a></li>
         </ul>
       </div>
     </div>
     <div role="main" class="ui-content">
-      <a href="#index" data-rel="back" data-transition="slide" class="ui-btn ui-corner-all ui-btn-inline">Go Back To Page 1</a>
+      <input type="search" name="search" id="search-basic" value="">
+    </div>
+  </div>
+  <div data-role="page" id="user-setting">
+    <div data-role="header">
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#index" class="ui-btn ui-icon-home ui-btn-icon-top"></a></li>
+          <li><a href="#search-index" class="ui-btn ui-icon-search ui-btn-icon-top"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-user ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div role="main" class="ui-content">
+      user-setting
     </div>
   </div>
 
