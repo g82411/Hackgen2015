@@ -6,22 +6,6 @@ b {
   font-size: 50px;
 }
 
-#change-username {
+#change-username, #add-user {
   padding: 10px;
-}
-
-#change-groupname {
-  padding: 10px;
-}
-
-#exit-group {
-  padding: 10px;
-}
-
-#add-choice {
-  padding: 10px;
-}
-
-.ui-flipswitch {
-  margin: 15px;
 }

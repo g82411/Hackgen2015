@@ -7,14 +7,15 @@ function add_user_callback( json ) {
   window.localStorage.setItem("person_id", json["userID"]);
 }
 
-document.addEventListener("deviceready", check_id, false);
-function check_id() {
-  var storage = window.localStorage;
-  person_id = window.localStorage.getItem("person_id");
-  if(!person_id) {
-    $( "#add-user" ).popup();
-    $( "#add-user" ).popup("open");
-  }
+$(function() {
+  setTimeout(function() {
+    var storage = window.localStorage;
+    person_id = window.localStorage.getItem("person_id");
+    if(!person_id) {
+      $( "#add-user" ).popup();
+      $( "#add-user" ).popup("open");
+    }
+  }, 100);
 })
 
 $("#add-user-submit").click(function() {
@@ -82,4 +83,4 @@ $("#create-group-submit").click(function() {
     data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat }
   }).done(function( msg ) {
   });
-});
+})
