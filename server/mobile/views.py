@@ -123,10 +123,10 @@ def addGroup(request):
     if not("groupname" in request.GET and "timeset" in request.GET and "defaulttoeat" in request.GET and "userID" in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
-        groupName = request.GET["groupname"]
-        groupPushTime = request.GET["timeset"]
+        groupName = escape(request.GET["groupname"])
+        groupPushTime = escape(request.GET["timeset"])
         owner_id = User.objects.get(userID=request.GET["userID"])
-        defaultValue = request.GET["defaulttoeat"]
+        defaultValue = escape(request.GET["defaulttoeat"])
         newGroup = Group(groupName=groupName,
                          groupPushTime=groupPushTime,
                          owner_id=owner_id,
@@ -205,10 +205,10 @@ def updateUserName(request):
         userID = request.GET["userID"]
         userName = request.GET["userName"]
         user = User.objects.get(userID=userID)
-        user.userName = userName
+        user.userName = escape(userName)
         user.save()
         response["status"] = STATUSCODE["UPDATEUSERNAMESUCCESS"]
-        response["userName"] = userName
+        response["userName"] = escape(userName)
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
 def searchGroup(request):
