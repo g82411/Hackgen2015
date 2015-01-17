@@ -87,12 +87,16 @@ def viewGroup(request):
         userID = request.GET["userID"]
         for groupid in Join.objects.filter(userID=userID).values_list('groupID'):
             pass
+def testFrom(request):
+    response = {}
+    userName = User.objects.get(userID="5wdmkf0xKM").userName
+    response['aa'] = userName
+    if 'callback' in request.REQUEST:
+        data = '%s(%s);' % ('jsonCallback',json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
 def addGroup(request):
     for key in request.POST:
         print request.POST[key]
-
-
-
 
 
 
