@@ -18,6 +18,7 @@ STATUSCODE = {
     "VOTESUCCESS":"202",
     "ADDGROUPSUCCESS":"203",
     "JOINSUCCESS":"204",
+    "SEARCHSUCCESS":"206",
     "UPDATEUSERNAMESUCCESS":"205",
     "PARAMETERMISS":"301",
     "TOOLONGPARAMETER":"302",
@@ -90,12 +91,25 @@ def vote(request):
     return HttpResponse(json.dumps(response),content_type="application/json")
 def viewGroup(request):
     response = {}
+    callback = 'view_group_callback'
     if not "userID" in request.GET:
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
         userID = request.GET["userID"]
-        for groupid in Join.objects.filter(userID=userID).values_list('groupID'):
-            pass
+        groupList = []
+        for ids in Join.objects.filter(userID=owner_id).values_list('groupID','isJoin'):
+            groupID = ids[0]
+            isJoin = ids[1]
+            groupName = Group.objects.get(groupID=groupID).groupName
+            result = {"groupID":groupID,
+                      "groupName":groupName,
+                      "isJoin":isJoin}
+            groupList.append(result)
+        response["groupList"] = groupList
+        response["status"] = STATUSCODE["SEARCHSUCCESS"]
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+
 def testFrom(request):
     response = {}
     name = request.GET["username"]
