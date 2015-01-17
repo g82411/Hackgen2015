@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Group(models.Model):
-    gruopID = models.AutoField(primary_key=True)
+    groupID = models.AutoField(primary_key=True)
     groupName = models.CharField(max_length=30)
     groupPushTime = models.CharField(max_length=8)
     defaultValue = models.CharField(max_length=40)
