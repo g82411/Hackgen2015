@@ -154,19 +154,28 @@
     <div data-role="panel" id="group-member" data-theme="b" data-position="right" data-display="overlay">
 
     </div>
-    <div data-role="page" id="group-setting">
-      <div data-role="header">
-        <!-- navbar -->
-        <div data-role="navbar" data-iconpos="top">
-          <ul>
-            <li><a href="#index" class="ui-btn ui-icon-back ui-btn-icon-top"></a></li>
-            <li><a href="#group-index" class="ui-btn ui-icon-bullets ui-btn-icon-top"></a></li>
-            <li><a href="#" class="ui-btn ui-icon-gear ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
-          </ul>
-        </div>
+  </div>
+  <div data-role="page" id="group-setting">
+    <div data-role="header">
+      <!-- navbar -->
+      <div data-role="navbar" data-iconpos="top">
+        <ul>
+          <li><a href="#index" class="ui-btn ui-icon-back ui-btn-icon-top"></a></li>
+          <li><a href="#group-index" class="ui-btn ui-icon-bullets ui-btn-icon-top"></a></li>
+          <li><a href="#" class="ui-btn ui-icon-gear ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
+        </ul>
       </div>
-      <div role="main" class="ui-content">
-        <input type="search" name="search" id="search-basic" value="">
+    </div>
+    <!-- <div role="main" class="ui-content">
+      <input type="search" name="search" id="search-basic" value="">
+    </div> -->
+    <div role="main" class="ui-content">
+      <p>使用者名稱：</p>
+      <b id="user-name">Gary</b>
+      <a href="#change-groupname" data-role="button" data-rel="popup">更改名稱</a>
+      <div data-role="popup" id="change-groupname">
+        <input type="text" maxlength="8" name="name" id="change-username-value" value="">
+        <a href="#" data-role="button" data-rel="back" data-theme="b" id="change-groupname-submit">送出</a>
       </div>
     </div>
   </div>
