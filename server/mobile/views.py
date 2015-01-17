@@ -29,13 +29,13 @@ def getRandomString(length):
         result += random.choice(POOL)
     return result
 # Create your views here.
-@csrf_exempt
 def addUser(request):
     response = {}
-    if not "username" in request.POST:
+    callback = "add_user"
+    if not "username" in request.GET:
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
-        username = escape(request.POST["username"])
+        username = escape(request.GET["username"])
         userID = getRandomString(10)
         # check if userID repet
         while User.objects.filter(userID=userID).count() > 0:
@@ -43,11 +43,13 @@ def addUser(request):
         try:
             newUser = User(userID=userID,userName=username)
             newUser.save()
+            response["userID"] = userID
             response["status"] = STATUSCODE["ADDUSERSUCCESS"]
         except Exception as e:
             response["status"] = STATUSCODE["SQLERROR"]
             print e
-        return HttpResponse(json.dumps(response),content_type="application/json")
+        data = '%s(%s);' % (callback,json.dumps(response))
+        return HttpResponse(response,content_type="application/javascript")
 def viewUserName(request):
     response = {}
     if not "userID" in request.GET:
@@ -59,6 +61,7 @@ def viewUserName(request):
     else:
         userName = User.objects.get(userID=userID).userName
         response["username"] = userName
+
     return HttpResponse(json.dumps(response),content_type="application/json")
 def vote(request):
     response = {}
@@ -95,9 +98,20 @@ def testFrom(request):
         data = '%s(%s);' % ('jsonCallback',json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
 def addGroup(request):
-    for key in request.POST:
-        print request.POST[key]
-
+    response = {}
+    callback = "create_group_callback"
+    if not("groupname" in request.GET and "timeset" in request.GET and "defaulttoeat"):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        groupName = request.GET["groupname"]
+        groupPushTime = request.GET["timeset"]
+        owner_id = User.objects.get(userID="5wdmkf0xKM")
+        defaultValue = request.GET["defaulttoeat"]
+        newGroup = Group(groupName=groupName,
+                         groupPushTime=groupPushTime,
+                         owner_id=owner_id,
+                         defaultValue=defaultValue)
+        newGroup.gruopID
 
 
 
