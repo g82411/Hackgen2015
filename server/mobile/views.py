@@ -88,9 +88,12 @@ def vote(request):
         else:
             chooseID = Choose.objects.get(chooseID=chooseID)
             userID = User.objects.get(userID=userID)
-            newVote = Vote(chooseID=chooseID,userID=userID)
-            newVote.save()
-            response["status"] = (STATUSCODE["VOTESUCCESS"])
+            if Vote.objects.filter(Q(chooseID=chooseID)&Q(userID=userID)) == 0:
+                newVote = Vote(chooseID=chooseID,userID=userID)
+                newVote.save()
+                response["status"] = (STATUSCODE["VOTESUCCESS"])
+            else:
+                response["status"] = (STATUSCODE[""])
     return HttpResponse(json.dumps(response),content_type="application/json")
 def viewGroup(request):
     response = {}
@@ -179,6 +182,7 @@ def join(request):
                       "groupName":groupName,
                       "isJoin":isJoin}
             groupList.append(result)
+        response["groupList"] = groupList
         response["status"] = STATUSCODE["JOINSUCCESS"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
@@ -281,6 +285,8 @@ def viewChoose(request):
                         result = {"id":chooseID , "name":chooseName,"isVote":True}
                     else:
                         result = {"id":chooseID , "name":chooseName,"isVote":False}
+                    voteNumber = Vote.objects.filter(chooseID_id=chooseID).count()
+                    result["voteNumber"] = voteNumber
                     searchResult.append(result)
                 response["chooseList"] = searchResult
                 response["status"] = STATUSCODE["SEARCHSUCCESS"]
@@ -322,6 +328,8 @@ def addChoose(request):
                         result = {"id":chooseID , "name":chooseName,"isVote":True}
                     else:
                         result = {"id":chooseID , "name":chooseName,"isVote":False}
+                    voteNumber = Vote.objects.filter(chooseID_id=chooseID).count()
+                    result["voteNumber"] = voteNumber
                     searchResult.append(result)
                 response["chooseList"] = searchResult
                 response["status"] = STATUSCODE["SEARCHSUCCESS"]
