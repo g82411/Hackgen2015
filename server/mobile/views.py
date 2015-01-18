@@ -372,11 +372,11 @@ def viewAllUsersInGroup(request):
     else:
         groupID = request.GET["groupID"]
         searchResult = []
-        for member in Join.objects.filter(groupID_id=groupID).values_list('userID_id','isJoin',flat=True):
-            isJoin = member[0]
-            user = User.objects.get(userID=member[1])
-            result = {"userName":user["userName"],
-                      "userID":user["userID"],
+        for member in Join.objects.filter(groupID_id=groupID).values_list('userID_id','isJoin'):
+            isJoin = member[1]
+            user = User.objects.get(userID=member[0])
+            result = {"userName":user.userName,
+                      "userID":user.userID,
                       "isJoin":isJoin}
             searchResult.append(result)
         response["status"] = STATUSCODE["SEARCHSUCCESS"]
@@ -396,9 +396,9 @@ def viewVoteMember(request):
         searchResult = []
         for voteMember in Vote.objects.filter(chooseID_id=chooseID).values_list('userID_id',flat=True):
             user = User.objects.get(userID=voteMember)
-            isJoin = Join.objects.get(userID=user,groupID_id=groupID)["isJoin"]
-            result = {"userName":user["userName"],
-                      "userID":user["userID"],
+            isJoin = Join.objects.get(userID=user,groupID_id=groupID).isJoin
+            result = {"userName":user.userName,
+                      "userID":user.userID,
                       "isJoin":isJoin}
             searchResult.append(result)
         response["status"] = STATUSCODE["SEARCHSUCCESS"]
