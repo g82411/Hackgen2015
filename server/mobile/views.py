@@ -237,6 +237,7 @@ def searchGroup(request):
             searchResult["fri"] = day.Fri
             searchResult["sat"] = day.Sat
             searchResult["sun"] = day.Sun
+            searchResult["groupID"] = group.groupID
             searchResult["groupName"] = group.groupName
             searchResult["groupPushTime"] = group.groupPushTime
             searchResult["defaultValue"] = group.defaultValue
@@ -276,7 +277,10 @@ def viewChoose(request):
                 for choose in chooseList.values_List('chooseID' , 'chooseName'):
                     chooseID = choose[0]
                     chooseName = choose[1]
-                    result = {"id":chooseID , "name":chooseName}
+                    if Vote.objects.filter(Q(userID_id=userID) & Q(chooseID_id=chooseID)):
+                        result = {"id":chooseID , "name":chooseName,"isVote":True}
+                    else:
+                        result = {"id":chooseID , "name":chooseName,"isVote":False}
                     searchResult.append(result)
                 response["chooseList"] = searchResult
                 response["status"] = STATUSCODE["SEARCHSUCCESS"]
@@ -314,7 +318,10 @@ def addChoose(request):
                 for choose in chooseList.values_List('chooseID' , 'chooseName'):
                     chooseID = choose[0]
                     chooseName = choose[1]
-                    result = {"id":chooseID , "name":chooseName}
+                    if Vote.objects.filter(Q(userID=userID) & Q(chooseID_id=chooseID)):
+                        result = {"id":chooseID , "name":chooseName,"isVote":True}
+                    else:
+                        result = {"id":chooseID , "name":chooseName,"isVote":False}
                     searchResult.append(result)
                 response["chooseList"] = searchResult
                 response["status"] = STATUSCODE["SEARCHSUCCESS"]
