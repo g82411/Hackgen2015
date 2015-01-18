@@ -6,7 +6,6 @@ class Group(models.Model):
     groupName = models.CharField(max_length=30)
     groupPushTime = models.CharField(max_length=8)
     defaultValue = models.CharField(max_length=40)
-    today_Value = models.CharField(max_length=40)
     owner_id = models.ForeignKey('User')
 class User(models.Model):
     userID = models.CharField(max_length=10,primary_key=True)
