@@ -5,9 +5,11 @@ function create_group_callback( json ) {
   for(var i in group_arr) {
     groupname = group_arr[i]["groupName"];
     groupid = group_arr[i]["groupID"];
+    $("#group-field").html();
     $("#group-field").append("<a href=\"#group-index\" id=\"group_"+groupid+"\" class=\"group-label ui-link ui-btn ui-shadow ui-corner-all\" data-role=\"button\" role=\"button\">"+groupname+"</a>")
   }
 }
+
 function add_user_callback( json ) {
   $("#user-name").html(json["userName"]);
   var storage = window.localStorage;
@@ -28,7 +30,48 @@ function parseUserID_callback( json ) {
 }
 
 function search_group_callback( json ) {
+  $("#group-info").html("");
+  $("#group-info").append("群組名稱："+json["groupName"]+"</br>");
+  $("#group-info").append("群組創建人："+json["owner"]+"</br>");
+  $("#group-info").append("結算時間："+json["groupPushTime"]+"</br>");
+  $("#group-info").append("結算星期：</br>");
+  if(json["sun"]) {
+    $("#group-info").append("Sun ");
+  }
+  if(json["mon"]) {
+    $("#group-info").append("Mon ");
+  }
+  if(json["tue"]) {
+    $("#group-info").append("Tue ");
+  }
+  if(json["wed"]) {
+    $("#group-info").append("Wed ");
+  }
+  if(json["thu"]) {
+    $("#group-info").append("Thu ");
+  }
+  if(json["fri"]) {
+    $("#group-info").append("Fri ");
+  }
+  if(json["sat"]) {
+    $("#group-info").append("Sat ");
+  }
+  $("#group-info").append("</br>");
+  $("#group-info").append("預設吃吃："+json["defaultValue"]+"</br>");
+  if(json["isJoin"]) {
+    $("#group-info").append("<a href=\"#\" class=\"ui-link ui-btn ui-shadow ui-corner-all\" data-role=\"button\" role=\"button\">您已經加入</a>");
+  }
+  else {
+    $("#group-info").append("<a href=\"#index\" class=\"join-group ui-link ui-btn ui-shadow ui-corner-all\" data-role=\"button\" role=\"button\" id=\"group_add_"+json["groupID"]+"\">加入群組</a>");
+  }
+}
 
+function view_choose_callback( json ) {
+  console.log(json);
+}
+
+function join_callback( json ) {
+  create_group_callback( json );
 }
 
 function getGroup() {
@@ -37,8 +80,6 @@ function getGroup() {
     url: "http://128.199.152.153:8000/viewGroup?callback=?",
     dataType:"jsonp",
     data: {userID: person_id}
-  }).done({
-
   })
 }
 
@@ -94,26 +135,33 @@ $(function() {
   })
 })
 
-$(function() {
-  $("#search-group").keypress(function( event ) {
-    if(event.which==13) {
-      event.preventDefault();
-      console.log('in');
-    }
-    // $.ajax({
-    //   type: "GET",
-    //   url: "http://128.199.152.153:8000/searchGroup?callback=?",
-    //   dataType:"jsonp",
-    //   data: {groupID: $(this).val(), userID: person_id}
-    // }).done({
-    //
-    // })
+$(".group-label").live('click', function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/viewChoose?callback=?",
+    dataType:"jsonp",
+    data: {userID: person_id, groupID: $(this).attr("id").substring(6)}
   })
 })
 
-$(function() {
-  $(".group-label").click(function() {
-    alert($(this).id());
+$("#search-group").live('keypress', function (e) {
+  if(event.which==13) {
+    event.preventDefault();
+    $.ajax({
+      type: "GET",
+      url: "http://128.199.152.153:8000/searchGroup?callback=?",
+      dataType:"jsonp",
+      data: {groupID: $(this).val(), userID: person_id}
+    })
+  }
+})
+
+$(".join-group").live("click", function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/join?callback=?",
+    dataType:"jsonp",
+    data: {userID: person_id, groupID: $(this).attr("id").substring(10)}
   })
 })
 
