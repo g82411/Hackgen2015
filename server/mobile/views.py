@@ -300,8 +300,9 @@ def addChoose(request):
         elif Join.objects.filter(Q(userID=User.objects.get(userID=userID)) & Q(groupID=Group.objects.get(groupID=groupID))).count == 0:
             response["status"] = STATUSCODE["USERNOTINGROUP"]
         else:
-            
             groupID = Group.objects.get(groupID=groupID)
+            newChoose = Choose(chooseName=chooseName,group=groupID)
+            newChoose.save()
             searchResult = []
             chooseList = Choose.objects.filter(groupID=groupID)
             if chooseList.count() == 0:
