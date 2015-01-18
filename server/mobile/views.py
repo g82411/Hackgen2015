@@ -11,6 +11,7 @@ from mobile.models import Choose
 from mobile.models import Vote
 from mobile.models import Day
 from mobile.models import Join
+from time import strftime
 import json
 import random
 STATUSCODE = {
@@ -51,8 +52,6 @@ def addUser(request):
         try:
             newUser = User(userID=userID,userName=username)
             newUser.save()
-            print userID
-            print username
             response["userID"] = userID
             response["userName"] = username
             response["status"] = STATUSCODE["ADDUSERSUCCESS"]
@@ -137,13 +136,34 @@ def addGroup(request):
                          defaultValue=defaultValue)
         newGroup.save()
         newGroup = Group.objects.get(groupID=newGroup.groupID)
-        Mon = request.GET["daysetmon"]
-        Tue = request.GET["daysettue"]
-        Wed = request.GET["daysetwed"]
-        Thu = request.GET["daysetthu"]
-        Fri = request.GET["daysetfri"]
-        Sat = request.GET["daysetsat"]
-        Sun = request.GET["daysetsun"]
+        if request.GET["daysetmon"] == u'true':
+            Mon = True
+        else:
+            Mon = False
+        if request.GET["daysettue"] == u'true':
+            Tue = True
+        else:
+            Tue = False
+        if request.GET["daysetwed"] == u'true':
+            Wed = True
+        else:
+            Wed = False
+        if request.GET["daysetthu"] == u'true':
+            Thu = True
+        else:
+            Thu = False
+        if request.GET["daysetfri"] == u'true':
+            Fri = True
+        else:
+            Fri = False
+        if request.GET["daysetsat"] == u'true':
+            Sat = True
+        else:
+            Sat = False
+        if request.GET["daysetsun"] == u'true':
+            Sun = True
+        else:
+            Sun = False
         newDay = Day(Mon=Mon,Tue=Tue,Wed=Wed,Thu=Thu,Fri=Fri,Sat=Sat,Sun=Sun,groupID=newGroup)
         newDay.save()
         newJoin = Join(groupID=newGroup,userID=owner_id)
@@ -171,7 +191,7 @@ def join(request):
         groupID = request.GET["groupID"]
         userID = User.objects.get(userID=userID)
         groupID = Group.objects.get(groupID=groupID)
-        if Join.objects.filter(Q(userID=userID) & Q(groupID=groupID)).count == 0:
+        if Join.objects.filter(Q(userID=userID) & Q(groupID=groupID)).count() == 0:
             newJoin = Join(groupID=groupID,userID=userID)
             newJoin.save()
         else:
@@ -281,7 +301,7 @@ def viewChoose(request):
             if chooseList.count() == 0:
                 pass
             else:
-                for choose in chooseList.values_List('chooseID' , 'chooseName'):
+                for choose in chooseList.values_list('chooseID' , 'chooseName'):
                     chooseID = choose[0]
                     chooseName = choose[1]
                     if Vote.objects.filter(Q(userID_id=userID) & Q(chooseID_id=chooseID)):
@@ -314,17 +334,20 @@ def addChoose(request):
             response["status"] = STATUSCODE["USERNOTINGROUP"]
         else:
             groupID = Group.objects.get(groupID=groupID)
-            newChoose = Choose(chooseName=chooseName,group=groupID)
-            newChoose.save()
-            userID = User.objects.get(userID=userID)
-            newVote = Vote(userID=userID,chooseID_id=newChoose.chooseID)
-            newVote.save()
+            if Choose.objects.filter(Q(chooseName=chooseName)&Q(group=groupID)).count() == 0:
+                newChoose = Choose(chooseName=chooseName,group=groupID)
+                newChoose.save()
+                userID = User.objects.get(userID=userID)
+                newVote = Vote(userID=userID,chooseID_id=newChoose.chooseID)
+                newVote.save()
+            else:
+                pass
             searchResult = []
-            chooseList = Choose.objects.filter(groupID=groupID)
+            chooseList = Choose.objects.filter(group_id=groupID)
             if chooseList.count() == 0:
                 pass
             else:
-                for choose in chooseList.values_List('chooseID' , 'chooseName'):
+                for choose in chooseList.values_list('chooseID' , 'chooseName'):
                     chooseID = choose[0]
                     chooseName = choose[1]
                     if Vote.objects.filter(Q(userID=userID) & Q(chooseID_id=chooseID)):
@@ -338,6 +361,59 @@ def addChoose(request):
                 response["status"] = STATUSCODE["SEARCHSUCCESS"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
+
+def viewAllUsersInGroup(request):
+    response = {}
+    callback = "view_member_callback"
+    if not "groupID" in request.GET:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    elif not request.GET["groupID"]:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        groupID = request.GET["groupID"]
+        searchResult = []
+        for member in Join.objects.filter(groupID_id=groupID).values_list('userID_id','isJoin',flat=True):
+            isJoin = member[0]
+            user = User.objects.get(userID=member[1])
+            result = {"userName":user["userName"],
+                      "userID":user["userID"],
+                      "isJoin":isJoin}
+            searchResult.append(result)
+        response["status"] = STATUSCODE["SEARCHSUCCESS"]
+        response["memberList"] = searchResult
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+def viewVoteMember(request):
+    response = {}
+    callback = "view_vote_member_callback"
+    if not ("chooseID" in request.GET and "groupID" in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    elif not( request.GET["chooseID"] and request.GET["groupID"]):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        chooseID = request.GET["chooseID"]
+        groupID = request.GET["groupID"]
+        searchResult = []
+        for voteMember in Vote.objects.filter(chooseID_id=chooseID).values_list('userID_id',flat=True):
+            user = User.objects.get(userID=voteMember)
+            isJoin = Join.objects.get(userID=user,groupID_id=groupID)["isJoin"]
+            result = {"userName":user["userName"],
+                      "userID":user["userID"],
+                      "isJoin":isJoin}
+            searchResult.append(result)
+        response["status"] = STATUSCODE["SEARCHSUCCESS"]
+        response["memberList"] = searchResult
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+def checkPush(request):
+    response = {}
+    callback = "check_push_callback"
+    if not ("userID" in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    elif not request.GET["userID"]:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        pass
 
 
 
