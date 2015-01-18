@@ -6,7 +6,7 @@ b {
   font-size: 50px;
 }
 
-#change-username, #add-user, #add-choice, #change-groupname {
+#change-username, #add-user, #add-choice, #change-groupname, #exit-group, #delete-group{
   padding: 10px;
 }
 .ui-navbar ul li a {

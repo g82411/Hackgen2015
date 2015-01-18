@@ -2,11 +2,12 @@ var person_id = "";
 
 function create_group_callback( json ) {
   group_arr = json["groupList"];
+  $("#group-field").html("");
   for(var i in group_arr) {
     groupname = group_arr[i]["groupName"];
     groupid = group_arr[i]["groupID"];
-    $("#group-field").html();
     $("#group-field").append("<a href=\"#group-index\" id=\"group_"+groupid+"\" class=\"group-label ui-link ui-btn ui-shadow ui-corner-all\" data-role=\"button\" role=\"button\">"+groupname+"</a>")
+  }
 }
 
 function add_user_callback( json ) {
@@ -128,9 +129,8 @@ $(function() {
       url: "http://128.199.152.153:8000/updateUserName?callback=?",
       dataType:"jsonp",
       data: {userID: person_id, userName: $("#change-username-value").val()}
-    }).done({
-
     })
+    $("#change-username-value").val("");
   })
 })
 
@@ -155,7 +155,13 @@ $("#search-group").live('keypress', function (e) {
   }
 })
 
+$(".ui-input-clear").live("click", function() {
+  $("#group-info").html("");
+})
+
 $(".join-group").live("click", function() {
+  $("#group-info").html("");
+  $("#search-group").val("");
   $.ajax({
     type: "GET",
     url: "http://128.199.152.153:8000/join?callback=?",
@@ -217,7 +223,15 @@ $(function() {
       url: "http://128.199.152.153:8000/addGroup?callback=?",
       dataType:"jsonp",
       data: { groupname: groupname, timeset: timeset, daysetsun: daysetsun, daysetmon: daysetmon, daysettue: daysettue, daysetwed: daysetwed, daysetthu: daysetthu, daysetfri: daysetfri, daysetsat: daysetsat, defaulttoeat: defaulttoeat, userID: person_id }
-    }).done(function( msg ) {
-    });
+    })
+
+    $("#group-name").val("");
+    $("#time-set").val("");
+    $("#default-to-eat").val("");
+    $(".day-input").attr("data-cacheval", "true");
+    $(".day-label").removeClass("ui-btn-active");
+    $(".day-label").removeClass("ui-checkbox-on");
+    $(".day-label").addClass("ui-checkbox-off");
+
   })
 })

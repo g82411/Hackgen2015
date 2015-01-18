@@ -171,8 +171,11 @@ def join(request):
         groupID = request.GET["groupID"]
         userID = User.objects.get(userID=userID)
         groupID = Group.objects.get(groupID=groupID)
-        newJoin = Join(groupID=groupID,userID=userID)
-        newJoin.save()
+        if Join.objects.filter(Q(userID=userID) & Q(groupID=groupID)).count == 0:
+            newJoin = Join(groupID=groupID,userID=userID)
+            newJoin.save()
+        else:
+            Join.objects.filter(Q(userID=userID) & Q(groupID=groupID)).delete()
         groupList = []
         for ids in Join.objects.filter(userID=userID).values_list('groupID','isJoin'):
             groupID = ids[0]
@@ -294,7 +297,7 @@ def viewChoose(request):
     return HttpResponse(data,content_type="application/javascript")
 def addChoose(request):
     response = {}
-    callback = "view_choose_callback"
+    callback = "add_choose_callback"
     if not('userID' in request.GET and 'groupID' in request.GET and 'chooseName' in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
