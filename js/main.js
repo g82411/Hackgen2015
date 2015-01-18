@@ -7,7 +7,6 @@ function create_group_callback( json ) {
     groupid = group_arr[i]["groupID"];
     $("#group-field").html();
     $("#group-field").append("<a href=\"#group-index\" id=\"group_"+groupid+"\" class=\"group-label ui-link ui-btn ui-shadow ui-corner-all\" data-role=\"button\" role=\"button\">"+groupname+"</a>")
-  }
 }
 
 function add_user_callback( json ) {

@@ -6,6 +6,6 @@ b {
   font-size: 50px;
 }
 
-#change-username, #add-user {
+#change-username, #add-user, #add-choice, #change-groupname {
   padding: 10px;
 }
