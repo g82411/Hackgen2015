@@ -88,7 +88,7 @@ def vote(request):
         else:
             chooseID = Choose.objects.get(chooseID=chooseID)
             userID = User.objects.get(userID=userID)
-            newVote = vote(chooseID=chooseID,userID=userID)
+            newVote = Vote(chooseID=chooseID,userID=userID)
             newVote.save()
             response["status"] = (STATUSCODE["VOTESUCCESS"])
     return HttpResponse(json.dumps(response),content_type="application/json")
@@ -242,7 +242,7 @@ def searchGroup(request):
             searchResult["groupPushTime"] = group.groupPushTime
             searchResult["defaultValue"] = group.defaultValue
             searchResult["owner"] = owner
-            if Join.objects.filter(Q(userID=user) & Q(groupID=group)).count == 0:
+            if Join.objects.filter(Q(userID=user) & Q(groupID=group)).count() == 0:
                 searchResult["isJoin"] = False
             else:
                 searchResult["isJoin"] = True
