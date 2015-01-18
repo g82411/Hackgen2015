@@ -26,7 +26,9 @@ STATUSCODE = {
     "NOGROUPNAME":"304",
     "UNDEFINEUSERID":"305",
     "UNDEFINECHOOSE":"306",
-    "FACKUERROR":"307"
+    "FACKUERROR":"307",
+    "UNDEFINEGROUPID":"308",
+    "USERNOTINGROUP":"309",
 }
 def getRandomString(length):
     result = ''
@@ -110,7 +112,6 @@ def viewGroup(request):
         response["status"] = STATUSCODE["SEARCHSUCCESS"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
-
 def testFrom(request):
     response = {}
     name = request.GET["username"]
@@ -249,9 +250,37 @@ def searchGroup(request):
             response["status"] = STATUSCODE["FACKUERROR"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
-
-
-
+def viewChoose(request):
+    response = {}
+    callback = "view_choose_callback"
+    if not('userID' in request.GET and 'groupID' in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        groupID = request.GET["groupID"]
+        userID = request.GET["userID"]
+        if not (groupID and userID):
+            response["status"] = STATUSCODE["PARAMETERMISS"]
+        elif Group.objects.filter(groupID=groupID).count() == 0:
+            response["status"] = STATUSCODE["UNDEFINEGROUPID"]
+        elif User.objects.filter(userID=userID).count() == 0:
+            response["status"] = STATUSCODE["UNDEFINEUSERID"]
+        elif Join.objects.filter(Q(userID=User.objects.get(userID=userID)) & Q(groupID=Group.objects.get(groupID=groupID))).count == 0:
+            response["status"] = STATUSCODE["USERNOTINGROUP"]
+        else:
+            searchResult = []
+            chooseList = Choose.objects.filter(groupID=Group.objects.get(groupID=groupID))
+            if chooseList.count() == 0:
+                pass
+            else:
+                for choose in chooseList.values_List('chooseID' , 'chooseName'):
+                    chooseID = choose[0]
+                    chooseName = choose[1]
+                    result = {"id":chooseID , "name":chooseName}
+                    searchResult.append(result)
+                response["chooseList"] = searchResult
+                response["status"] = STATUSCODE["SEARCHSUCCESS"]
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
 
 
 
