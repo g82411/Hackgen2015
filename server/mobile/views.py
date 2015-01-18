@@ -76,11 +76,11 @@ def viewUserName(request):
 def vote(request):
     response = {}
     callback = "vote_callback"
-    if not ("userID" in request.POST and "chooseID" in request.POST):
+    if not ("userID" in request.GET and "chooseID" in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
-        userID = request.POST["userID"]
-        chooseID = request.POST["chooseID"]
+        userID = request.GET["userID"]
+        chooseID = request.GET["chooseID"]
         if User.objects.filter(userID=userID).count() == 0:
             response["status"] = (STATUSCODE["UNDEFINEUSERID"])
         elif Choose.objects.filter(userID=userID).count() == 0:
