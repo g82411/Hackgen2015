@@ -122,8 +122,8 @@
       </div>
     </div>
     <div role="main" class="ui-content">
-      <fieldset data-role="controlgroup">
-        <div id="group-choice">
+      <div id="group-choice">
+        <fieldset data-role="controlgroup">
           <fieldset class="ui-grid-a">
             <div class="ui-block-a">
               <input type="radio" name="group-choice" id="choice-id" value="choice-id" checked="checked">
@@ -133,20 +133,11 @@
               <a href="#group-member" class="ui-btn ui-icon-user ui-btn-icon-left">5</a>
             </div>
           </fieldset>
-          <fieldset class="ui-grid-a">
-            <div class="ui-block-a">
-              <input type="radio" name="group-choice" id="choice-id2" value="choice-id2">
-              <label for="choice-id2">秋葉原</label>
-            </div>
-            <div class="ui-block-b">
-              <a href="#group-member" class="ui-btn ui-icon-user ui-btn-icon-left">9</a>
-            </div>
-          </fieldset>
-        </div>
-      </fieldset>
+        </fieldset>
+      </div>
       <a href="#add-choice" data-role="button" data-rel="popup">新增提案</a>
       <div data-role="popup" id="add-choice">
-        <input type="text" maxlength="8" name="name" id="change-username-value" value="">
+        <input type="text" maxlength="8" name="name" id="add-choose-value" value="">
         <a href="#" data-role="button" data-rel="back" data-theme="b" id="add-choice-submit">送出</a>
       </div>
       <a href="#group-member" data-role="button">查看成員</a>

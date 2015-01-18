@@ -1,4 +1,5 @@
 var person_id = "";
+var now_group = "";
 
 function create_group_callback( json ) {
   group_arr = json["groupList"];
@@ -66,12 +67,34 @@ function search_group_callback( json ) {
   }
 }
 
-function view_choose_callback( json ) {
-  console.log(json);
-}
-
 function join_callback( json ) {
   create_group_callback( json );
+}
+
+function add_choose_callback( json ) {
+  var chooseList = json["chooseList"];
+  $("#group-choice").html("");
+  $("#group-choice").append('<fieldset id="choose_content" data-role="controlgroup">')
+  for(var i in chooseList) {
+    var voteNum = chooseList[i]["voteNumber"];
+    var choose_id = chooseList[i]["id"];
+    var choose_name = chooseList[i]["name"];
+    $("#choose_content").append('\
+      <fieldset class="ui-grid-a">\
+        <div class="ui-block-a">\
+          <input type="radio" name="group-choice" id="choose_'+choose_id+'"value="choose_'+choose_id+'">\
+          <label for="choose_'+choose_id+'">'+choose_name+'</label>\
+        </div>\
+        <div class="ui-block-b">\
+          <a href="#group-member" id="choose_vote_num" class="ui-btn ui-icon-user ui-btn-icon-left">'+voteNum+'</a>\
+        </div>\
+      </fieldset>\
+    ')
+  }
+}
+
+function view_choose_callback( json ) {
+  add_choose_callback( json );
 }
 
 function getGroup() {
@@ -141,6 +164,7 @@ $(".group-label").live('click', function() {
     dataType:"jsonp",
     data: {userID: person_id, groupID: $(this).attr("id").substring(6)}
   })
+  now_group = $(this).attr("id").substring(6);
 })
 
 $("#search-group").live('keypress', function (e) {
@@ -160,14 +184,24 @@ $(".ui-input-clear").live("click", function() {
 })
 
 $(".join-group").live("click", function() {
-  $("#group-info").html("");
-  $("#search-group").val("");
   $.ajax({
     type: "GET",
     url: "http://128.199.152.153:8000/join?callback=?",
     dataType:"jsonp",
     data: {userID: person_id, groupID: $(this).attr("id").substring(10)}
   })
+  $("#group-info").html("");
+  $("#search-group").val("");
+})
+
+$("#add-choice-submit").live("click", function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/addChoose?callback=?",
+    dataType:"jsonp",
+    data: {userID: person_id, groupID: now_group, chooseName: $("#add-choose-value").val()}
+  })
+  $("#add-choose-value").val("");
 })
 
 $(function() {
