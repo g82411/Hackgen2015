@@ -9,6 +9,7 @@ b {
 #change-username, #add-user, #add-choice {
   padding: 10px;
 }
+<<<<<<< HEAD
 .ui-navbar ul li a {
   background-color: rgb(255, 165, 115) !important;
   border-color: rgb(255,131,62) !important;
@@ -29,3 +30,5 @@ b {
   background: linear-gradient(to left,rgb(255,131,62),rgb(255, 165, 115),rgb(255,131,62)); /* Standard syntax */
   border-color: rgb(255,131,62) !important;
 }
+=======
+>>>>>>> f71b974b4344358d66aa2e78d3a79ac38dad3b59
