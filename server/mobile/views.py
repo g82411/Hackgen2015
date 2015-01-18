@@ -303,6 +303,9 @@ def addChoose(request):
             groupID = Group.objects.get(groupID=groupID)
             newChoose = Choose(chooseName=chooseName,group=groupID)
             newChoose.save()
+            userID = User.objects.get(userID=userID)
+            newVote = Vote(userID=userID,chooseID_id=newChoose.chooseID)
+            newVote.save()
             searchResult = []
             chooseList = Choose.objects.filter(groupID=groupID)
             if chooseList.count() == 0:
