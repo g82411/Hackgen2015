@@ -11,6 +11,7 @@ from mobile.models import Choose
 from mobile.models import Vote
 from mobile.models import Day
 from mobile.models import Join
+from time import strftime
 import json
 import random
 STATUSCODE = {
@@ -360,6 +361,59 @@ def addChoose(request):
                 response["status"] = STATUSCODE["SEARCHSUCCESS"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
+
+def viewAllUsersInGroup(request):
+    response = {}
+    callback = "view_member_callback"
+    if not "groupID" in request.GET:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    elif not request.GET["groupID"]:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        groupID = request.GET["groupID"]
+        searchResult = []
+        for member in Join.objects.filter(groupID_id=groupID).values_list('userID_id','isJoin',flat=True):
+            isJoin = member[0]
+            user = User.objects.get(userID=member[1])
+            result = {"userName":user["userName"],
+                      "userID":user["userID"],
+                      "isJoin":isJoin}
+            searchResult.append(result)
+        response["status"] = STATUSCODE["SEARCHSUCCESS"]
+        response["memberList"] = searchResult
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+def viewVoteMember(request):
+    response = {}
+    callback = "view_vote_member_callback"
+    if not ("chooseID" in request.GET and "groupID" in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    elif not( request.GET["chooseID"] and request.GET["groupID"]):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        chooseID = request.GET["chooseID"]
+        groupID = request.GET["groupID"]
+        searchResult = []
+        for voteMember in Vote.objects.filter(chooseID_id=chooseID).values_list('userID_id',flat=True):
+            user = User.objects.get(userID=voteMember)
+            isJoin = Join.objects.get(userID=user,groupID_id=groupID)["isJoin"]
+            result = {"userName":user["userName"],
+                      "userID":user["userID"],
+                      "isJoin":isJoin}
+            searchResult.append(result)
+        response["status"] = STATUSCODE["SEARCHSUCCESS"]
+        response["memberList"] = searchResult
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+def checkPush(request):
+    response = {}
+    callback = "check_push_callback"
+    if not ("userID" in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    elif not request.GET["userID"]:
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        pass
 
 
 
