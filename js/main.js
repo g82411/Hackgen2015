@@ -32,6 +32,7 @@ function parseUserID_callback( json ) {
 
 function search_group_callback( json ) {
   $("#group-info").html("");
+  $("#group-info").append("群組ID："+json["groupID"]+"</br>")
   $("#group-info").append("群組名稱："+json["groupName"]+"</br>");
   $("#group-info").append("群組創建人："+json["owner"]+"</br>");
   $("#group-info").append("結算時間："+json["groupPushTime"]+"</br>");
@@ -98,11 +99,17 @@ function view_choose_callback( json ) {
 }
 
 function view_member_callback( json ) {
-  add_choose_callback( json );
+  var memberArr = json["memberList"];
+  $("#group-member").html("");
+  for(var i in memberArr) {
+    name = memberArr[i]["userName"];
+    $("#group-member").append("<i style=\"margin:10px; font-size: 30px;\" class=\"fa fa-user\">  "+name+"</i></br>");
+  }
+
 }
 
-function view_vote_member( json ) {
-  add_choose_callback( json );
+function view_vote_member_callback( json ) {
+  view_member_callback( json );
 }
 
 function getGroup() {
