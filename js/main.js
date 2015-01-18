@@ -112,6 +112,15 @@ function view_vote_member_callback( json ) {
   view_member_callback( json );
 }
 
+function vote_callback( json ) {
+  var result = json["searchResult"];
+  for(var i in result) {
+    var voteNum = result[i]["voteNumber"];
+    var choose_id = result[i]["id"];
+    $("#choose_vote_num_"+choose_id).html(voteNum);
+  }
+}
+
 function getGroup() {
   $.ajax({
     type: "GET",
@@ -234,6 +243,15 @@ $(".choose_vote_num").live("click", function() {
     url: "http://128.199.152.153:8000/viewVoteMember?callback=?",
     dataType:"jsonp",
     data: {groupID: now_group, chooseID: $(this).attr("id").substring(16)}
+  })
+})
+
+$("input:radio[name=group-choice]").live("click", function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/vote?callback=?",
+    dataType:"jsonp",
+    data: {chooseID: $(this).val().substring(7), userID: person_id, groupID: now_group}
   })
 })
 
