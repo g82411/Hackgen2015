@@ -81,6 +81,7 @@ def vote(request):
     else:
         userID = request.GET["userID"]
         chooseID = request.GET["chooseID"]
+        groupID = request.GET["groupID"]
         if User.objects.filter(userID=userID).count() == 0:
             response["status"] = (STATUSCODE["UNDEFINEUSERID"])
         elif Choose.objects.filter(chooseID=chooseID).count() == 0:
@@ -96,7 +97,21 @@ def vote(request):
             else:
 
                 response["status"] = "e04"
-        voteNumber = Vote.objects.filter(chooseID=chooseID).count()
+            searchResult = []
+            chooseList = Choose.objects.filter(group_id=Group.objects.get(groupID=groupID))
+            if chooseList.count() == 0:
+                pass
+            else:
+                for choose in chooseList.values_list('chooseID' , 'chooseName'):
+                    chooseID = choose[0]
+                    chooseName = choose[1]
+                    if Vote.objects.filter(Q(userID_id=userID) & Q(chooseID_id=chooseID)):
+                        result = {"id":chooseID , "name":chooseName,"isVote":True}
+                    else:
+                        result = {"id":chooseID , "name":chooseName,"isVote":False}
+                    voteNumber = Vote.objects.filter(chooseID_id=chooseID).count()
+                    result["voteNumber"] = voteNumber
+                    searchResult.append(result)
         response["votenum"] = voteNumber
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/json")
