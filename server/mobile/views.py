@@ -228,7 +228,8 @@ def searchGroup(request):
             user = User.objects.get(userID=userID)
             group = Group.objects.get(groupID=groupID)
             day = Day.objects.get(groupID=group)
-            owner = User.objects.get(userID=group.owner_id).userName
+            print group.owner_id.userID
+            owner = User.objects.get(userID=group.owner_id.userID).userName
             searchResult["mon"] = day.Mon
             searchResult["tue"] = day.Tue
             searchResult["wed"] = day.Wed
@@ -268,7 +269,7 @@ def viewChoose(request):
             response["status"] = STATUSCODE["USERNOTINGROUP"]
         else:
             searchResult = []
-            chooseList = Choose.objects.filter(groupID=Group.objects.get(groupID=groupID))
+            chooseList = Choose.objects.filter(group_id=Group.objects.get(groupID=groupID))
             if chooseList.count() == 0:
                 pass
             else:
