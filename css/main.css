@@ -12,10 +12,14 @@ b {
 .ui-navbar ul li a {
   background-color: rgb(255, 165, 115) !important;
   border-color: rgb(255,131,62) !important;
+  background-color: -moz-rgb(255, 165, 115) !important;
+  border-color: -moz-rgb(255,131,62) !important;
 }
 
 .ui-navbar ul li a.ui-btn-active {
+  background-color: -moz-rgb(255,131,62) !important;
   background-color: rgb(255,131,62) !important;
+  border-color: -moz-rgb(255,131,62) !important;
   border-color: rgb(255,131,62) !important;
 }
 .ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit{
