@@ -21,10 +21,11 @@
     </div>
     <div role="main" class="ui-content">
       <div id="group-field">
+        <a href="#group-index" data-role="button">午餐吃吃團</a>
       </div>
       <a href="#add-group" data-role="button">新增群組</a>
     </div>
-    <div data-role="popup" data-dismissible="false" id="add-user">
+    <div data-role="popup" id="add-user">
       <input type="text" maxlength="8" name="name" id="add-user-value" value="請輸入名稱">
       <a href="#" data-role="button" data-rel="back" data-theme="b" id="add-user-submit">送出</a>
     </div>
@@ -57,11 +58,11 @@
     </div>
     <div role="main" class="ui-content">
       <p>使用者名稱：</p>
-      <b id="user-name"></b>
+      <b id="user-name">GARY</b>
       <a href="#change-username" data-role="button" data-rel="popup">更改名稱</a>
       <div data-role="popup" id="change-username">
         <input type="text" maxlength="8" name="name" id="change-username-value" value="">
-        <a href="#" data-role="button" data-rel="back" id="change-username-submit">送出</a>
+        <a href="#" data-role="button" data-rel="back" data-theme="b" id="change-username-submit">送出</a>
       </div>
     </div>
   </div>
@@ -103,7 +104,7 @@
         <label for="default-to-eat">預設吃吃：</label>
         <input type="text" name="default-to-eat" id="default-to-eat" value="">
         <fieldset class="ui-grid-a">
-          <div class="ui-block-a"><a href="#index" id="create-group-submit" data-role="button">確定</a></div>
+          <div class="ui-block-a"><input id="create-group-submit" type="button" value="確定"></div>
           <div class="ui-block-b"><a href="#index" data-role="button" id="add-group-cancel">取消</a></div>
         </fieldset>
       </div>
@@ -118,6 +119,7 @@
           <li><a href="#" class="ui-btn ui-icon-bullets ui-btn-icon-top ui-btn-active ui-state-persist"></a></li>
           <li><a href="#group-setting" class="ui-btn ui-icon-gear ui-btn-icon-top"></a></li>
         </ul>
+
       </div>
     </div>
     <div role="main" class="ui-content">
@@ -169,12 +171,55 @@
       <input type="search" name="search" id="search-basic" value="">
     </div> -->
     <div role="main" class="ui-content">
-      <p>使用者名稱：</p>
-      <b id="user-name">Gary</b>
+      <p>群組名稱：</p>
+      <b id="group-name"></b>
       <a href="#change-groupname" data-role="button" data-rel="popup">更改名稱</a>
       <div data-role="popup" id="change-groupname">
         <input type="text" maxlength="8" name="name" id="change-username-value" value="">
         <a href="#" data-role="button" data-rel="back" data-theme="b" id="change-groupname-submit">送出</a>
+      </div>
+      <div id="edit-group">
+        <label for="time-set">新時間：</label>
+        <input type="time" name="time-set" id="new-time-set" value="">
+        <label for="day-set">新的星期：</label>
+        <div id="new-day-set" class="ui-field-contain">
+          <fieldset data-role="controlgroup" data-type="horizontal">
+            <input type="checkbox" name="day-set-sun" id="day-set-sun" class="custom" data-cacheval="true">
+            <label for="day-set-sun">Sun</label>
+
+            <input type="checkbox" name="day-set-mon" id="day-set-mon" class="custom">
+            <label for="day-set-mon">Mon</label>
+
+            <input type="checkbox" name="day-set-tue" id="day-set-tue" class="custom">
+            <label for="day-set-tue">Tue</label>
+
+            <input type="checkbox" name="day-set-wed" id="day-set-wed" class="custom">
+            <label for="day-set-wed">Wed</label>
+
+            <input type="checkbox" name="day-set-thu" id="day-set-thu" class="custom">
+            <label for="day-set-thu">Thu</label>
+
+            <input type="checkbox" name="day-set-fri" id="day-set-fri" class="custom">
+            <label for="day-set-fri">Fri</label>
+
+            <input type="checkbox" name="day-set-sat" id="day-set-sat" class="custom">
+            <label for="day-set-sat">Sat</label>
+          </fieldset>
+        </div>
+        <fieldset class="ui-grid-a">
+          <div class="ui-block-a"><input id="edit-group-submit" type="button" value="確定"></div>
+          <div class="ui-block-b"><a href="#index" data-role="button" id="edit-group-cancel">取消</a></div>
+        </fieldset>
+      </div>
+      <a href="#exit-group" data-role="button" data-rel="popup">退出群組</a>
+      <div data-role="popup" id="exit-group">
+        <a href="#index" data-role="button" id="exit-group-cancel">確定退出</a>
+        <a href="#" data-role="button" data-rel="back" data-theme="b">取消</a>
+      </div>
+      <a href="#delete-group" data-role="button" data-rel="popup">刪除群組</a>
+      <div data-role="popup" id="delete-group">
+        <a href="#index" data-role="button" id="delete-group-cancel">確定刪除</a>
+        <a href="#" data-role="button" data-rel="back" data-theme="b">取消</a>
       </div>
     </div>
   </div>
