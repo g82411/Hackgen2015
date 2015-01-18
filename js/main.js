@@ -2,11 +2,9 @@ var person_id = "";
 
 function create_group_callback( json ) {
   group_arr = json["groupList"];
-  for(var i in group_arr) {
-    groupname = group_arr[i]["groupName"];
-    groupid = group_arr[i]["groupID"];
+    groupname = group_arr[group_arr.size()-1]["groupName"];
+    groupid = group_arr[group_arr.size()-1]["groupID"];
     $("#group-field").append("<a href=\"#group-index\" id=\"group_"+groupid+"\" class=\"group-label ui-link ui-btn ui-shadow ui-corner-all\" data-role=\"button\" role=\"button\">"+groupname+"</a>")
-  }
 }
 function add_user_callback( json ) {
   $("#user-name").html(json["userName"]);
