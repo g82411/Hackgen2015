@@ -218,36 +218,36 @@ def searchGroup(request):
     if not("groupID" in request.GET and "userID" in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
-        try:
-            userID = request.GET["userID"]
-            groupID = request.GET["groupID"]
-            searchResult = {}
-            if Group.objects.filter(groupID=groupID).count() == 0:
-                pass
+
+        userID = request.GET["userID"]
+        groupID = request.GET["groupID"]
+        searchResult = {}
+        if Group.objects.filter(groupID=groupID).count() == 0:
+            pass
+        else:
+            user = User.objects.get(userID=userID)
+            group = Group.objects.get(groupID=groupID)
+            day = Day.objects.get(groupID=group)
+            owner = User.objects.get(userID=group.owner_id).userName
+            searchResult["mon"] = day.Mon
+            searchResult["tue"] = day.Tue
+            searchResult["wed"] = day.Wed
+            searchResult["thu"] = day.Thu
+            searchResult["fri"] = day.Fri
+            searchResult["sat"] = day.Sat
+            searchResult["sun"] = day.Sun
+            searchResult["groupName"] = group.groupName
+            searchResult["groupPushTime"] = group.groupPushTime
+            searchResult["defaultValue"] = group.defaultValue
+            searchResult["owner"] = owner
+            if Join.objects.filter(Q(userID=user) & Q(groupID=group)).count == 0:
+                searchResult["isJoin"] = False
             else:
-                user = User.objects.get(userID=userID)
-                group = Group.objects.get(groupID=groupID)
-                day = Day.objects.get(groupID=group)
-                owner = User.objects.get(userID=group.owner_id).userName
-                searchResult["mon"] = day.Mon
-                searchResult["tue"] = day.Tue
-                searchResult["wed"] = day.Wed
-                searchResult["thu"] = day.Thu
-                searchResult["fri"] = day.Fri
-                searchResult["sat"] = day.Sat
-                searchResult["sun"] = day.Sun
-                searchResult["groupName"] = group.groupName
-                searchResult["groupPushTime"] = group.groupPushTime
-                searchResult["defaultValue"] = group.defaultValue
-                searchResult["owner"] = owner
-                if Join.objects.filter(Q(userID=user) & Q(groupID=group)).count == 0:
-                    searchResult["isJoin"] = False
-                else:
-                    searchResult["isJoin"] = True
-                response.update(searchResult)
-                response["status"] = STATUSCODE["SEARCHSUCCESS"]
-        except:
-            response["status"] = STATUSCODE["FACKUERROR"]
+                searchResult["isJoin"] = True
+            response.update(searchResult)
+            response["status"] = STATUSCODE["SEARCHSUCCESS"]
+
+    response["status"] = STATUSCODE["FACKUERROR"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
 def viewChoose(request):
@@ -281,6 +281,41 @@ def viewChoose(request):
                 response["status"] = STATUSCODE["SEARCHSUCCESS"]
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
+def addChoose(request):
+    response = {}
+    callback = "view_choose_callback"
+    if not('userID' in request.GET and 'groupID' in request.GET and 'chooseName' in request.GET):
+        response["status"] = STATUSCODE["PARAMETERMISS"]
+    else:
+        groupID = request.GET["groupID"]
+        userID = request.GET["userID"]
+        chooseName = request.GET["chooseName"]
+        if not (groupID and userID and chooseName):
+            response["status"] = STATUSCODE["PARAMETERMISS"]
+        elif Group.objects.filter(groupID=groupID).count() == 0:
+            response["status"] = STATUSCODE["UNDEFINEGROUPID"]
+        elif User.objects.filter(userID=userID).count() == 0:
+            response["status"] = STATUSCODE["UNDEFINEUSERID"]
+        elif Join.objects.filter(Q(userID=User.objects.get(userID=userID)) & Q(groupID=Group.objects.get(groupID=groupID))).count == 0:
+            response["status"] = STATUSCODE["USERNOTINGROUP"]
+        else:
+            
+            groupID = Group.objects.get(groupID=groupID)
+            searchResult = []
+            chooseList = Choose.objects.filter(groupID=groupID)
+            if chooseList.count() == 0:
+                pass
+            else:
+                for choose in chooseList.values_List('chooseID' , 'chooseName'):
+                    chooseID = choose[0]
+                    chooseName = choose[1]
+                    result = {"id":chooseID , "name":chooseName}
+                    searchResult.append(result)
+                response["chooseList"] = searchResult
+                response["status"] = STATUSCODE["SEARCHSUCCESS"]
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+
 
 
 
