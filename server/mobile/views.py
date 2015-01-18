@@ -406,6 +406,21 @@ def viewVoteMember(request):
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/javascript")
 def checkPush(request):
+    def isTodayPush(groupID):
+        if strftime("%w") == "0":
+            return Day.objects.get(Q(groupID_id=groupID)).Sun
+        elif strftime("%w") == "1":
+            return Day.objects.get(Q(groupID_id=groupID)).Mon
+        elif strftime("%w") == "2":
+            return Day.objects.get(Q(groupID_id=groupID)).Tue
+        elif strftime("%w") == "3":
+            return Day.objects.get(Q(groupID_id=groupID)).Wed
+        elif strftime("%w") == "4":
+            return Day.objects.get(Q(groupID_id=groupID)).Thu
+        elif strftime("%w") == "5":
+            return Day.objects.get(Q(groupID_id=groupID)).Fri
+        elif strftime("%w") == "6":
+            return Day.objects.get(Q(groupID_id=groupID)).Sat
     response = {}
     callback = "check_push_callback"
     if not ("userID" in request.GET):
@@ -413,7 +428,46 @@ def checkPush(request):
     elif not request.GET["userID"]:
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
-        pass
+        userID = request.GET["userID"]
+        searchResult = []
+        for userInGroup in Join.objects.filter(userID_id=userID).value_list('groupID_id',flat=True):
+            for nowTimePushGroup in Group.filter(Q(groupID=userInGroup) & Q(groupPushTime=strftime("%H:%M"))).value_list('groupID',flat=True):
+                if isTodayPush(nowTimePushGroup):
+                    maxVoteNumber = -1
+                    maxChoose = -1
+                    for choose in Choose.objects.filter(group_id=nowTimePushGroup).value_list('chooseID',flat=True):
+                        voteNumber = Vote.objects.filter(chooseID_id=choose).count()
+                        if (voteNumber > 0 and voteNumber > maxVoteNumber):
+                            maxVoteNumber = voteNumber
+                            maxChoose = choose
+                    pushGroup = Group.object.get(groupID=nowTimePushGroup)
+                    if maxChoose == -1:
+                        pushGroup.today_Value = pushGroup.defaultValue
+                        pushGroup.save()
+                    else:
+                        pushGroup.today_Value = Choose.objects.get(chooseID=maxChoose).chooseName
+                        pushGroup.save()
+                    members_id = Join.objects.filter(groupID=pushGroup).value_list('userID_id',flat=True)
+                    members = []
+                    for member_id in members_id:
+                        memberName = User.objects.get(userID=member_id).userName
+                        members.append(memberName)
+                    result = {}
+                    result["members"] = members
+                    result["today"] = pushGroup.today_Value
+                    result["groupName"] = pushGroup.groupName
+                    result["groupID"] = pushGroup.groupID
+                    searchResult.append(result)
+        response["serchResult"] = searchResult
+        response["status"] = STATUSCODE["SEARCHSUCCESS"]
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/javascript")
+
+
+
+
+
+
 
 
 
