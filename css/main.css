@@ -10,18 +10,18 @@ b {
   padding: 10px;
 }
 .ui-navbar ul li a {
-  background-color: rgb(255, 116, 132) !important;
+  background-color: rgb(255, 165, 115) !important;
 }
 
 .ui-navbar ul li a.ui-btn-active {
-  background-color: rgb(255,56,78) !important;
+  background-color: rgb(255,131,62) !important;
 }
 .ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit{
-  background: -webkit-linear-gradient(rgb(255,56,78),rgb(255, 116, 132),rgb(255, 56, 78)); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(rgb(255,56,78),rgb(255, 116, 132),rgb(255, 56, 78)); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(rgb(255,56,78),rgb(255, 116, 132),rgb(255, 56, 78)); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(to left,rgb(254, 81, 107),rgb(255, 116, 132),rgb(254, 81, 107)); /* Standard syntax */
-
-/*.ui-controlgroup-vertical .ui-btn{
-  background-color: rgba(240, 170, 76, 0.44);
-}*/
+  background: -webkit-linear-gradient(to left, rgb(255,131,62),rgb(255, 165, 115),rgb(255,131,62)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(to left, rgb(255,131,62),rgb(255, 165, 115),rgb(255,131,62)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(to left, rgb(255,131,62),rgb(255, 165, 115),rgb(255,131,62)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to left,rgb(255,131,62),rgb(255, 165, 115),rgb(255,131,62)); /* Standard syntax */
+}
+.ui-link .ui-btn .ui-shadow .ui-corner-all{
+  background-color: rgb(255, 165, 115) !important;
+}
