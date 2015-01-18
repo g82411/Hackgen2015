@@ -75,25 +75,46 @@ def viewUserName(request):
     return HttpResponse(json.dumps(response),content_type="application/json")
 def vote(request):
     response = {}
-    if not ("userID" in request.POST and "chooseID" in request.POST):
+    callback = "vote_callback"
+    if not ("userID" in request.GET and "chooseID" in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
-        userID = request.POST["userID"]
-        chooseID = request.POST["chooseID"]
+        userID = request.GET["userID"]
+        chooseID = request.GET["chooseID"]
+        groupID = request.GET["groupID"]
         if User.objects.filter(userID=userID).count() == 0:
             response["status"] = (STATUSCODE["UNDEFINEUSERID"])
-        elif Choose.objects.filter(userID=userID).count() == 0:
+        elif Choose.objects.filter(chooseID=chooseID).count() == 0:
             response["status"] = (STATUSCODE["UNDEFINECHOOSE"])
         else:
             chooseID = Choose.objects.get(chooseID=chooseID)
             userID = User.objects.get(userID=userID)
-            if Vote.objects.filter(Q(chooseID=chooseID)&Q(userID=userID)) == 0:
+            if Vote.objects.filter(Q(chooseID=chooseID)&Q(userID=userID)).count() == 0:
                 newVote = Vote(chooseID=chooseID,userID=userID)
                 newVote.save()
+
                 response["status"] = (STATUSCODE["VOTESUCCESS"])
             else:
-                response["status"] = (STATUSCODE[""])
-    return HttpResponse(json.dumps(response),content_type="application/json")
+
+                response["status"] = "e04"
+            searchResult = []
+            chooseList = Choose.objects.filter(group_id=Group.objects.get(groupID=groupID))
+            if chooseList.count() == 0:
+                pass
+            else:
+                for choose in chooseList.values_list('chooseID' , 'chooseName'):
+                    chooseID = choose[0]
+                    chooseName = choose[1]
+                    if Vote.objects.filter(Q(userID_id=userID) & Q(chooseID_id=chooseID)):
+                        result = {"id":chooseID , "name":chooseName,"isVote":True}
+                    else:
+                        result = {"id":chooseID , "name":chooseName,"isVote":False}
+                    voteNumber = Vote.objects.filter(chooseID_id=chooseID).count()
+                    result["voteNumber"] = voteNumber
+                    searchResult.append(result)
+        response["votenum"] = voteNumber
+    data = '%s(%s);' % (callback,json.dumps(response))
+    return HttpResponse(data,content_type="application/json")
 def viewGroup(request):
     response = {}
     callback = 'view_group_callback'
@@ -372,11 +393,11 @@ def viewAllUsersInGroup(request):
     else:
         groupID = request.GET["groupID"]
         searchResult = []
-        for member in Join.objects.filter(groupID_id=groupID).values_list('userID_id','isJoin',flat=True):
-            isJoin = member[0]
-            user = User.objects.get(userID=member[1])
-            result = {"userName":user["userName"],
-                      "userID":user["userID"],
+        for member in Join.objects.filter(groupID_id=groupID).values_list('userID_id','isJoin'):
+            isJoin = member[1]
+            user = User.objects.get(userID=member[0])
+            result = {"userName":user.userName,
+                      "userID":user.userID,
                       "isJoin":isJoin}
             searchResult.append(result)
         response["status"] = STATUSCODE["SEARCHSUCCESS"]
@@ -396,9 +417,9 @@ def viewVoteMember(request):
         searchResult = []
         for voteMember in Vote.objects.filter(chooseID_id=chooseID).values_list('userID_id',flat=True):
             user = User.objects.get(userID=voteMember)
-            isJoin = Join.objects.get(userID=user,groupID_id=groupID)["isJoin"]
-            result = {"userName":user["userName"],
-                      "userID":user["userID"],
+            isJoin = Join.objects.get(userID=user,groupID_id=groupID).isJoin
+            result = {"userName":user.userName,
+                      "userID":user.userID,
                       "isJoin":isJoin}
             searchResult.append(result)
         response["status"] = STATUSCODE["SEARCHSUCCESS"]
@@ -430,12 +451,12 @@ def checkPush(request):
     else:
         userID = request.GET["userID"]
         searchResult = []
-        for userInGroup in Join.objects.filter(userID_id=userID).value_list('groupID_id',flat=True):
-            for nowTimePushGroup in Group.filter(Q(groupID=userInGroup) & Q(groupPushTime=strftime("%H:%M"))).value_list('groupID',flat=True):
+        for userInGroup in Join.objects.filter(userID_id=userID).values_list('groupID_id',flat=True):
+            for nowTimePushGroup in Group.objects.filter(Q(groupID=userInGroup) & Q(groupPushTime=strftime("%H:%M"))).values_list('groupID',flat=True):
                 if isTodayPush(nowTimePushGroup):
                     maxVoteNumber = -1
                     maxChoose = -1
-                    for choose in Choose.objects.filter(group_id=nowTimePushGroup).value_list('chooseID',flat=True):
+                    for choose in Choose.objects.filter(group_id=nowTimePushGroup).values_list('chooseID',flat=True):
                         voteNumber = Vote.objects.filter(chooseID_id=choose).count()
                         if (voteNumber > 0 and voteNumber > maxVoteNumber):
                             maxVoteNumber = voteNumber
@@ -447,7 +468,7 @@ def checkPush(request):
                     else:
                         pushGroup.today_Value = Choose.objects.get(chooseID=maxChoose).chooseName
                         pushGroup.save()
-                    members_id = Join.objects.filter(groupID=pushGroup).value_list('userID_id',flat=True)
+                    members_id = Join.objects.filter(groupID=pushGroup).values_list('userID_id',flat=True)
                     members = []
                     for member_id in members_id:
                         memberName = User.objects.get(userID=member_id).userName

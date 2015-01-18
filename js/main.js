@@ -83,8 +83,12 @@ function add_choose_callback( json ) {
     $("#choose_content").append('\
       <fieldset class="ui-grid-a">\
         <div class="ui-block-a">\
-          <input type="radio" name="group-choice" id="choose_'+choose_id+'"value="choose_'+choose_id+'">\
-          <label for="choose_'+choose_id+'">'+choose_name+'</label>\
+          <span class="choose_vote_num ui-btn">\
+            <div class="ui-grid-b">\
+            <div class="ui-block-a"><input type="radio" name="group-choice" id="choose_'+choose_id+'"value="choose_'+choose_id+'"></div>\
+            <div class="ui-block-c"><label for="choose_'+choose_id+'">'+choose_name+'</label></div>\
+            </div>\
+          </span>\
         </div>\
         <div class="ui-block-b">\
           <a href="#group-member" id="choose_vote_num_'+choose_id+'" class="choose_vote_num ui-btn ui-icon-user ui-btn-icon-left">'+voteNum+'</a>\
