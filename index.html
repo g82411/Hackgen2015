@@ -4,6 +4,7 @@
     <title>hackgen2015</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href=".\css\main.css" />
+    <link rel="stylesheet" href=".\font-awesome-4.2.0\css\font-awesome.css" />
   </head>
   <body>
 
@@ -158,21 +159,54 @@
       </div>
     </div>
     <div role="main" class="ui-content">
+        <div id="group-info">123</div>
       <div id="edit-group">
         <fieldset class="ui-grid-a">
-          <div class="ui-block-a"><input id="edit-group-submit" type="button" value="確定"></div>
-          <div class="ui-block-b"><a href="#index" data-role="button" id="edit-group-cancel">取消</a></div>
+          <div class="ui-block-a"><a href="#edit" data-role="button" data-rel="popup">編輯</a></div>
+          <div class="ui-block-b"><a href="#group-index" data-role="button" data-theme="a">取消</a></div>
         </fieldset>
-      </div>
-      <a href="#exit-group" data-role="button" data-rel="popup">退出群組</a>
-      <div data-role="popup" id="exit-group">
-        <a href="#index" data-role="button" id="exit-group-cancel">確定退出</a>
-        <a href="#" data-role="button" data-rel="back" data-theme="b">取消</a>
-      </div>
-      <a href="#delete-group" data-role="button" data-rel="popup">刪除群組</a>
-      <div data-role="popup" id="delete-group">
-        <a href="#index" data-role="button" id="delete-group-cancel">確定刪除</a>
-        <a href="#" data-role="button" data-rel="back" data-theme="b">取消</a>
+        <div data-role="popup" id="edit">
+          <div role="main" class="ui-content">
+            <div id="edit-group">
+              <label for="new-group-name">群組名稱：</label>
+              <input type="text" maxlength="10" name="new-group-name" id="new-group-name" value="">
+              <label for="new-time-set">時間：</label>
+              <input type="time" name="new-time-set" id="new-time-set" value="">
+              <label for="day-set">星期：</label>
+              <div id="new-day-set" class="ui-field-contain">
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                  <input type="checkbox" name="new-day-set-sun" id="new-day-set-sun" class="day-input custom" data-cacheval="true">
+                  <label for="new-day-set-sun" class="day-label">Sun</label>
+
+                  <input type="checkbox" name="new-day-set-mon" id="new-day-set-mon" class="day-input custom">
+                  <label for="new-day-set-mon" class="day-label">Mon</label>
+
+                  <input type="checkbox" name="new-day-set-tue" id="new-day-set-tue" class="day-input custom">
+                  <label for="new-day-set-tue" class="day-label">Tue</label>
+
+                  <input type="checkbox" name="new-day-set-wed" id="new-day-set-wed" class="day-input custom">
+                  <label for="new-day-set-wed" class="day-label">Wed</label>
+
+                  <input type="checkbox" name="new-day-set-thu" id="new-day-set-thu" class="day-input custom">
+                  <label for="new-day-set-thu" class="day-label">Thu</label>
+
+                  <input type="checkbox" name="new-day-set-fri" id="new-day-set-fri" class="day-input custom">
+                  <label for="new-day-set-fri" class="day-label">Fri</label>
+
+                  <input type="checkbox" name="day-set-sat" id="new-day-set-sat" class="day-input custom">
+                  <label for="new-day-set-sat" class="day-label">Sat</label>
+                </fieldset>
+              </div>
+              <label for="change-to-eat">我想吃吃：</label>
+              <input type="text" name="change-to-eat" id="change-to-eat" value="">
+              <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><a href="#group-setting" id="edit-group-submit" data-role="button">確定修改</a></div>
+                <div class="ui-block-b"><a href="#group-setting" data-role="button">取消修改</a></div>
+                <div class="ui-block-c"><a href="#index" id="leave-group" data-role="button">刪除/離開</a></div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
