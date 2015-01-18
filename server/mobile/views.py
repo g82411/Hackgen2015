@@ -75,7 +75,7 @@ def viewUserName(request):
     return HttpResponse(json.dumps(response),content_type="application/json")
 def vote(request):
     response = {}
-    callback = "vote"
+    callback = "vote_callback"
     if not ("userID" in request.POST and "chooseID" in request.POST):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
@@ -91,9 +91,13 @@ def vote(request):
             if Vote.objects.filter(Q(chooseID=chooseID)&Q(userID=userID)) == 0:
                 newVote = Vote(chooseID=chooseID,userID=userID)
                 newVote.save()
+
                 response["status"] = (STATUSCODE["VOTESUCCESS"])
             else:
-                response["status"] = (STATUSCODE[""])
+
+                response["status"] = "e04"
+        voteNumber = Vote.objects.filter(chooseID=chooseID).count()
+        response["votenum"] = voteNumber
     data = '%s(%s);' % (callback,json.dumps(response))
     return HttpResponse(data,content_type="application/json")
 def viewGroup(request):
