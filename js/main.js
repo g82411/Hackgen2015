@@ -86,7 +86,7 @@ function add_choose_callback( json ) {
           <label for="choose_'+choose_id+'">'+choose_name+'</label>\
         </div>\
         <div class="ui-block-b">\
-          <a href="#group-member" id="choose_vote_num" class="ui-btn ui-icon-user ui-btn-icon-left">'+voteNum+'</a>\
+          <a href="#group-member" id="choose_vote_num_'+choose_id+'" class="choose_vote_num ui-btn ui-icon-user ui-btn-icon-left">'+voteNum+'</a>\
         </div>\
       </fieldset>\
     ')
@@ -94,6 +94,14 @@ function add_choose_callback( json ) {
 }
 
 function view_choose_callback( json ) {
+  add_choose_callback( json );
+}
+
+function view_member_callback( json ) {
+  add_choose_callback( json );
+}
+
+function view_vote_member( json ) {
   add_choose_callback( json );
 }
 
@@ -202,6 +210,24 @@ $("#add-choice-submit").live("click", function() {
     data: {userID: person_id, groupID: now_group, chooseName: $("#add-choose-value").val()}
   })
   $("#add-choose-value").val("");
+})
+
+$("#view_member").live("click", function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/viewMember?callback=?",
+    dataType:"jsonp",
+    data: {groupID: now_group}
+  })
+})
+
+$(".choose_vote_num").live("click", function() {
+  $.ajax({
+    type: "GET",
+    url: "http://128.199.152.153:8000/viewVoteMember?callback=?",
+    dataType:"jsonp",
+    data: {groupID: now_group, chooseID: $(this).attr("id").substring(16)}
+  })
 })
 
 $(function() {
