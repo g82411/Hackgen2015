@@ -83,12 +83,12 @@ def vote(request):
         chooseID = request.GET["chooseID"]
         if User.objects.filter(userID=userID).count() == 0:
             response["status"] = (STATUSCODE["UNDEFINEUSERID"])
-        elif Choose.objects.filter(userID=userID).count() == 0:
+        elif Choose.objects.filter(chooseID=chooseID).count() == 0:
             response["status"] = (STATUSCODE["UNDEFINECHOOSE"])
         else:
             chooseID = Choose.objects.get(chooseID=chooseID)
             userID = User.objects.get(userID=userID)
-            if Vote.objects.filter(Q(chooseID=chooseID)&Q(userID=userID)) == 0:
+            if Vote.objects.filter(Q(chooseID=chooseID)&Q(userID=userID)).count() == 0:
                 newVote = Vote(chooseID=chooseID,userID=userID)
                 newVote.save()
 
