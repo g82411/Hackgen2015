@@ -297,7 +297,7 @@ def viewChoose(request):
     return HttpResponse(data,content_type="application/javascript")
 def addChoose(request):
     response = {}
-    callback = "view_choose_callback"
+    callback = "add_choose_callback"
     if not('userID' in request.GET and 'groupID' in request.GET and 'chooseName' in request.GET):
         response["status"] = STATUSCODE["PARAMETERMISS"]
     else:
